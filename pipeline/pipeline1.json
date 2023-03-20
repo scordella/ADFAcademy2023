@@ -49,18 +49,6 @@
 							},
 							{
 								"source": {
-									"name": "ProductID",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ProductAltKey",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
 									"name": "ProductName",
 									"type": "String",
 									"physicalType": "String"
