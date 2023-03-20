@@ -1,0 +1,16 @@
+{
+	"name": "BarbagalloFrancesco",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SalesLT",
+			"table": "Product"
+		}
+	}
+}
