@@ -151,7 +151,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@concat('\nexec dbo.UpdateRecord\n(',\nitem().ProductKey,',''',\nitem().ProductAltKey,''',''',\nitem().ProductName,''',''',\nitem().Color,''',''',\nitem().Size,''',',\nitem().ListPrice,',''',\nitem().DiscontinuedStr,''',''',\nitem().Discontinued,\n''')'\n)",
+											"value": "@concat('\nexec dbo.UpdateRecord\n ',\nitem().ProductKey,',''',\nitem().ProductAltKey,''',''',\nitem().ProductName,''',''',\nitem().Color,''',''',\nitem().Size,''',',\nitem().ListPrice,',''',\nitem().DiscontinuedStr,''',''',\nitem().Discontinued,\n''''\n)",
 											"type": "Expression"
 										}
 									}
