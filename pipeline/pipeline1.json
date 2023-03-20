@@ -28,11 +28,9 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true
-						},
-						"sqlWriterUseTableLock": true,
+						"preCopyScript": "TRUNCATE table dbo.AndreulaArmando",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
@@ -41,24 +39,24 @@
 						"mappings": [
 							{
 								"source": {
+									"name": "ProductName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ProductName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
 									"name": "ProductID",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ProductKey",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ProductName",
+									"name": "ProductAltKey",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
