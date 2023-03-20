@@ -37,16 +37,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "ProductKey"
-								},
-								"sink": {
-									"name": "ProductKey",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
 									"name": "ProductAltKey"
 								},
 								"sink": {
@@ -107,25 +97,13 @@
 							},
 							{
 								"source": {
-									"name": "DiscontinuedStr",
+									"name": "Discontinued",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "DiscontinuedStr",
 									"type": "String",
 									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Discontinued",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Discontinued",
-									"type": "Boolean",
-									"physicalType": "bit"
 								}
 							}
 						],
