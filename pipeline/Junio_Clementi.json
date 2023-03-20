@@ -37,7 +37,9 @@
 						"mappings": [
 							{
 								"source": {
-									"name": ""
+									"name": "ProductID",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ProductAltKey",
@@ -98,6 +100,7 @@
 							{
 								"source": {
 									"name": "Discontinued",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
