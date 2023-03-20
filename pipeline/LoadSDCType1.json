@@ -25,7 +25,7 @@
 						"referenceName": "DimProduct",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			},
 			{
@@ -42,7 +42,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@not(equals(activity('MissingRecords').output.count,0))",
+						"value": "@not(equals(activity('MissingRecords').output.firstRow.ID_List,''))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
