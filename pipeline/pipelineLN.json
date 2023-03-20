@@ -49,7 +49,7 @@
 							},
 							{
 								"source": {
-									"name": "ProductID",
+									"name": "ProductName",
 									"type": "String",
 									"physicalType": "String"
 								},
