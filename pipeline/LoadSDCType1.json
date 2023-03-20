@@ -131,7 +131,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Insert missing record",
+							"name": "Update records",
 							"type": "Script",
 							"dependsOn": [],
 							"policy": {
@@ -151,7 +151,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@concat('\nSET IDENTITY_INSERT dbo.[DimProduct_Copy] ON\n\n\ninsert into dbo.[DimProduct_Copy]([ProductKey],[ProductAltKey],[ProductName],[Color],[Size],[ListPrice],[DiscontinuedStr],[Discontinued])\nvalues\n(',\nitem().ProductKey,',''',\nitem().ProductAltKey,''',''',\nitem().ProductName,''',''',\nitem().Color,''',''',\nitem().Size,''',',\nitem().ListPrice,',''',\nitem().DiscontinuedStr,''',''',\nitem().Discontinued,\n''')\nSET IDENTITY_INSERT dbo.[DimProduct_Copy] OFF')",
+											"value": "@concat('\nexec dbo.UpdateRecord\n(',\nitem().ProductKey,',''',\nitem().ProductAltKey,''',''',\nitem().ProductName,''',''',\nitem().Color,''',''',\nitem().Size,''',',\nitem().ListPrice,',''',\nitem().DiscontinuedStr,''',''',\nitem().Discontinued,\n''')'\n)",
 											"type": "Expression"
 										}
 									}
