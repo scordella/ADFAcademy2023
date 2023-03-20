@@ -78,18 +78,6 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Color",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Size",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
 									"name": "Size",
 									"type": "String",
 									"physicalType": "nvarchar"
@@ -117,6 +105,18 @@
 								},
 								"sink": {
 									"name": "DiscontinuedStr",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ProductID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ProductAltKey",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
