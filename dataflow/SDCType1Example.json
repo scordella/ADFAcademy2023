@@ -1,0 +1,102 @@
+{
+	"name": "SDCType1Example",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ProductData",
+						"type": "DatasetReference"
+					},
+					"name": "DimProductCSV"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimProduct",
+						"type": "DatasetReference"
+					},
+					"name": "DimProductTable"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DimProduct",
+						"type": "DatasetReference"
+					},
+					"name": "DimProductResult"
+				}
+			],
+			"transformations": [
+				{
+					"name": "RecordCheck"
+				},
+				{
+					"name": "PerformUpsert"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProductID as string,",
+				"          ProductName as string,",
+				"          Color as string,",
+				"          Size as string,",
+				"          ListPrice as string,",
+				"          Discontinued as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> DimProductCSV",
+				"source(output(",
+				"          ProductKey as integer,",
+				"          ProductAltKey as string,",
+				"          ProductName as string,",
+				"          Color as string,",
+				"          Size as string,",
+				"          ListPrice as decimal(19,4),",
+				"          Discontinued as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DimProductTable",
+				"DimProductCSV, DimProductTable lookup(ProductID == ProductAltKey,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> RecordCheck",
+				"RecordCheck alterRow(insertIf(isNull(ProductKey)),",
+				"     updateIf(not(isNull(ProductKey)))) ~> PerformUpsert",
+				"PerformUpsert sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ProductKey as integer,",
+				"          ProductAltKey as string,",
+				"          ProductName as string,",
+				"          Color as string,",
+				"          Size as string,",
+				"          ListPrice as decimal(19,4),",
+				"          DiscontinuedStr as string,",
+				"          Discontinued as boolean",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:true,",
+				"     upsertable:true,",
+				"     keys:['ProductAltKey'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ProductAltKey = ProductID,",
+				"          ProductName = DimProductCSV@ProductName,",
+				"          Color = DimProductCSV@Color,",
+				"          Size = DimProductCSV@Size,",
+				"          ListPrice = DimProductCSV@ListPrice,",
+				"          Discontinued = DimProductCSV@Discontinued",
+				"     )) ~> DimProductResult"
+			]
+		}
+	}
+}

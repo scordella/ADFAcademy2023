@@ -1,0 +1,9 @@
+{
+	"name": "fg-dat-dev-we-adf",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d546fbcb-db73-4f22-b4ef-05fb494d67db",
+		"tenantId": "268996b6-3efa-4a68-96a7-1e6166de157a"
+	}
+}
