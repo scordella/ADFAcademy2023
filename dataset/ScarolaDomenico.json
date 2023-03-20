@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable1",
+	"name": "ScarolaDomenico",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "dat_db",
