@@ -42,9 +42,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ProductKey",
-									"type": "Int32",
-									"physicalType": "int"
+									"name": "ProductAltKey",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -104,9 +104,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Discontinued",
-									"type": "Boolean",
-									"physicalType": "bit"
+									"name": "DiscontinuedStr",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							}
 						],
