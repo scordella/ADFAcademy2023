@@ -79,7 +79,7 @@
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "Get Records to update",
 				"type": "Lookup",
 				"dependsOn": [
 					{
