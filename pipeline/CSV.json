@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CopyProductData",
+				"name": "Data Copy",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,21 +16,37 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "truncate table dbo.DimProduct",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
+							{
+								"source": {
+									"name": "ProductID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ProductKey",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
 							{
 								"source": {
 									"name": "ProductID",
@@ -104,6 +120,18 @@
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
+							},
+							{
+								"source": {
+									"name": "Discontinued",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Discontinued",
+									"type": "Boolean",
+									"physicalType": "bit"
+								}
 							}
 						],
 						"typeConversion": true,
@@ -115,13 +143,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "dev_GioelePerri",
+						"referenceName": "ProductData",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DimProduct",
+						"referenceName": "dev_GioelePerri",
 						"type": "DatasetReference"
 					}
 				]
