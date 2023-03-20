@@ -1,0 +1,84 @@
+{
+	"name": "LoadSDCType1",
+	"properties": {
+		"activities": [
+			{
+				"name": "MissingRecords",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[GetNewRecords]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DimProduct",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Missing record check",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "MissingRecords",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(equals(activity('MissingRecords').output.count,0))",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Insert missing records",
+							"type": "Script",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": "SET IDENTITY_INSERT dbo.[DimProduct_Copy] ON\n\n\ninsert into dbo.[DimProduct_Copy]([ProductKey],[ProductAltKey],[ProductName],[Color],[Size],[ListPrice],[DiscontinuedStr],[Discontinued])\nselect * \nfrom dbo.[DimProduct]\nwhere ProductKey not in (\nselect distinct ProductKey from dbo.[DimProduct_Copy]\n)\n\nSET IDENTITY_INSERT dbo.[DimProduct_Copy] OFF"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "Esercitazione"
+		},
+		"annotations": []
+	}
+}
