@@ -37,8 +37,9 @@
 						"mappings": [
 							{
 								"source": {
+									"name": "ProductID",
 									"type": "String",
-									"ordinal": 1
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ProductKey",
@@ -48,8 +49,9 @@
 							},
 							{
 								"source": {
+									"name": "ProductName",
 									"type": "String",
-									"ordinal": 2
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ProductAltKey",
@@ -59,8 +61,9 @@
 							},
 							{
 								"source": {
+									"name": "ProductName",
 									"type": "String",
-									"ordinal": 3
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ProductName",
@@ -70,8 +73,9 @@
 							},
 							{
 								"source": {
+									"name": "Color",
 									"type": "String",
-									"ordinal": 4
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Color",
@@ -81,8 +85,9 @@
 							},
 							{
 								"source": {
+									"name": "Size",
 									"type": "String",
-									"ordinal": 5
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Size",
@@ -92,8 +97,9 @@
 							},
 							{
 								"source": {
+									"name": "ListPrice",
 									"type": "String",
-									"ordinal": 6
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ListPrice",
@@ -105,9 +111,9 @@
 							},
 							{
 								"source": {
+									"name": "Discontinued",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 6
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "DiscontinuedStr",
@@ -125,7 +131,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "AmedeoTolace",
+						"referenceName": "ProductData",
 						"type": "DatasetReference"
 					}
 				],
