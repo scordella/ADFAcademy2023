@@ -110,6 +110,57 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "ForEachMissingElement",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Records to update",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('MissingRecords').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Insert missing record",
+							"type": "Script",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "@concat('\nSET IDENTITY_INSERT dbo.[DimProduct_Copy] ON\n\n\ninsert into dbo.[DimProduct_Copy]([ProductKey],[ProductAltKey],[ProductName],[Color],[Size],[ListPrice],[DiscontinuedStr],[Discontinued])\nvalues\n(',\nitem().ProductKey,',''',\nitem().ProductAltKey,''',''',\nitem().ProductName,''',''',\nitem().Color,''',''',\nitem().Size,''',',\nitem().ListPrice,',''',\nitem().DiscontinuedStr,''',''',\nitem().Discontinued,\n''')\nSET IDENTITY_INSERT dbo.[DimProduct_Copy] OFF')",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					]
+				}
 			}
 		],
 		"folder": {
