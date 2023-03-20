@@ -1,16 +1,16 @@
 {
-	"name": "BarbagalloFrancesco",
+	"name": "dat_BarbagalloFrancesco",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ADW",
+			"referenceName": "dat_db",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "SalesLT",
-			"table": "Product"
+			"schema": "dbo",
+			"table": "BarbagalloFrancesco"
 		}
 	}
 }

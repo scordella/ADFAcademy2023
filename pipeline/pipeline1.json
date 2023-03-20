@@ -43,7 +43,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "BarbagalloFrancesco",
+						"referenceName": "dat_BarbagalloFrancesco",
 						"type": "DatasetReference"
 					}
 				]
