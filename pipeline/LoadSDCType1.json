@@ -66,7 +66,10 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "SET IDENTITY_INSERT dbo.[DimProduct_Copy] ON\n\n\ninsert into dbo.[DimProduct_Copy]([ProductKey],[ProductAltKey],[ProductName],[Color],[Size],[ListPrice],[DiscontinuedStr],[Discontinued])\nselect * \nfrom dbo.[DimProduct]\nwhere ProductKey not in (\nselect distinct ProductKey from dbo.[DimProduct_Copy]\n)\n\nSET IDENTITY_INSERT dbo.[DimProduct_Copy] OFF"
+										"text": {
+											"value": "@concat(\n'insert into dbo.DimProductSDCType1 \nselect *\nfrom dbo.DimProduct\nwhere ProductKey in (',\nactivity('MissingRecords').output.firstRow.ID_List,\n')'\n)",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
