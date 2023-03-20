@@ -37,7 +37,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "ProductAltKey"
+									"name": "ProductKey"
 								},
 								"sink": {
 									"name": "ProductAltKey",
