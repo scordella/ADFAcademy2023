@@ -125,7 +125,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Records to update').output",
+						"value": "@activity('Get Records to update').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
