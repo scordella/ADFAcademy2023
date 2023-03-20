@@ -28,8 +28,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table dbo.DimProduct",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -42,9 +44,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ProductKey",
-									"type": "Int32",
-									"physicalType": "int"
+									"name": "ProductAltKey",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -104,9 +106,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Discontinued",
-									"type": "Boolean",
-									"physicalType": "bit"
+									"name": "DiscontinuedStr",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							}
 						],
