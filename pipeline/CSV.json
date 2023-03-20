@@ -36,13 +36,11 @@
 						"type": "TabularTranslator",
 						"mappings": [
 							{
-								"sink": {
-									"name": "ProductKey",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
+								"source": {
+									"name": "ProductID",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "ProductAltKey",
 									"type": "String",
@@ -100,22 +98,15 @@
 								}
 							},
 							{
-								"sink": {
-									"name": "DiscontinuedStr",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
 								"source": {
 									"name": "Discontinued",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Discontinued",
-									"type": "Boolean",
-									"physicalType": "bit"
+									"name": "DiscontinuedStr",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							}
 						],
