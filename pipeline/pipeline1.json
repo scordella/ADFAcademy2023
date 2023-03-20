@@ -36,15 +36,22 @@
 						"type": "TabularTranslator",
 						"mappings": [
 							{
+								"sink": {
+									"name": "ProductKey",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
 								"source": {
 									"name": "ProductID",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ProductKey",
-									"type": "Int32",
-									"physicalType": "int"
+									"name": "ProductAltKey",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -95,30 +102,6 @@
 									"physicalType": "money",
 									"scale": 4,
 									"precision": 19
-								}
-							},
-							{
-								"source": {
-									"name": "Discontinued",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "DiscontinuedStr",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductID",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ProductAltKey",
-									"type": "String",
-									"physicalType": "nvarchar"
 								}
 							}
 						],
