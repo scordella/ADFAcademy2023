@@ -107,7 +107,7 @@
 							},
 							{
 								"source": {
-									"name": "Discontinued_Str",
+									"name": "DiscontinuedStr",
 									"physicalType": "String"
 								},
 								"sink": {
