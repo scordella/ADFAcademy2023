@@ -28,7 +28,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE table dbo.dat_GiuseppeFracascio",
+						"preCopyScript": "TRUNCATE table dbo.FracascioGiuseppe",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
