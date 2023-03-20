@@ -67,7 +67,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@concat(\n'insert into dbo.DimProductSDCType1 \nselect [ProductAltKey],[ProductName],[Color],[Size],[ListPrice],[DiscontinuedStr],[Discontinued]\nfrom dbo.DimProduct\nwhere ProductKey in (',\nactivity('MissingRecords').output.firstRow.ID_List,\n')'\n)",
+											"value": "@concat(\n'insert into dbo.DimProductSDCType1 ([ProductAltKey],[ProductName],[Color],[Size],[ListPrice],[DiscontinuedStr],[Discontinued])\nselect [ProductAltKey],[ProductName],[Color],[Size],[ListPrice],[DiscontinuedStr],[Discontinued]\nfrom dbo.DimProduct\nwhere ProductKey in (',\nactivity('MissingRecords').output.firstRow.ID_List,\n')'\n)",
 											"type": "Expression"
 										}
 									}
