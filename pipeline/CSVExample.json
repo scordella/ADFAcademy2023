@@ -127,7 +127,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DimProduct",
+						"referenceName": "dat_AndreaSorbello",
 						"type": "DatasetReference"
 					}
 				]
