@@ -356,7 +356,7 @@
 		"parameters": {
 			"table": {
 				"type": "string",
-				"defaultValue": "SalesOrderDetail_FracascioGiuseppe"
+				"defaultValue": "SalesOrderDetails_FracascioGiuseppe"
 			}
 		},
 		"variables": {
