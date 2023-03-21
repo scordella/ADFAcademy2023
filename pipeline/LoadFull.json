@@ -55,7 +55,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dat_MirsadaMataj",
+						"referenceName": "ETL_MirsadaMataj",
 						"type": "DatasetReference"
 					}
 				]
