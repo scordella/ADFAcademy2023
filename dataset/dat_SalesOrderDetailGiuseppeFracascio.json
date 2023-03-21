@@ -5,6 +5,16 @@
 			"referenceName": "dat_db",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"schema": {
+				"type": "string",
+				"defaultValue": "ETL"
+			},
+			"table": {
+				"type": "string",
+				"defaultValue": "SalesOrderDetail_FracascioGiuseppe"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
