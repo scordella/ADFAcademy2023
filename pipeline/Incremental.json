@@ -17,7 +17,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -235,8 +234,17 @@
 				}
 			}
 		],
+		"parameters": {
+			"table": {
+				"type": "string",
+				"defaultValue": "SalesOrderDetail"
+			}
+		},
 		"variables": {
 			"LastLoad": {
+				"type": "String"
+			},
+			"MaxModifiedDate": {
 				"type": "String"
 			}
 		},
