@@ -217,8 +217,7 @@
 		],
 		"parameters": {
 			"table": {
-				"type": "string",
-				"defaultValue": "SalesOrderDetail_LeaNicita"
+				"type": "string"
 			}
 		},
 		"variables": {
