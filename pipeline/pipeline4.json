@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Get_LastLoad",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\r\n    'select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = ''',\r\n    pipeline().parameters.table,\r\n    ''''\r\n)",
+							"value": "@concat(\n    'select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = ''',\n    pipeline().parameters.table,\n    ''''\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -31,15 +31,17 @@
 							"schema": "ETL",
 							"table": "LoadMeta"
 						}
-					}
+					},
+					"firstRowOnly": true
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Set_LastLoad",
+				"description": "",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Get_LastLoad",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -49,7 +51,7 @@
 				"typeProperties": {
 					"variableName": "LastLoad",
 					"value": {
-						"value": "@activity('Lookup1').output.firstRow.LastLoad",
+						"value": "@activity('Get_LastLoad').output.firstRow.LastLoad",
 						"type": "Expression"
 					}
 				}
@@ -59,7 +61,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "Set_LastLoad",
 						"dependencyConditions": [
 							"Succeeded"
 						]
