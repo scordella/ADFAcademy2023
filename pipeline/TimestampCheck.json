@@ -398,6 +398,9 @@
 			},
 			"Data_Modifica": {
 				"type": "String"
+			},
+			"Last_Load": {
+				"type": "String"
 			}
 		},
 		"folder": {
