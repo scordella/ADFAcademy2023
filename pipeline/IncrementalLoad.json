@@ -274,7 +274,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": "ETL",
-										"table": "LastLoad"
+										"table": "SalesOrderDetail_FracascioGiuseppe"
 									}
 								},
 								"firstRowOnly": true
