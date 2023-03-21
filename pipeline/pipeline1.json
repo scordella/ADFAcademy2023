@@ -13,7 +13,105 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"ifTrueActivities": [
+						{
+							"name": "IncrementalLoad",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from SalesLT.'\n,pipeline().parameters.nome_tabella\n,' where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "test",
+										"table": "test"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail"
+									}
+								}
+							]
+						},
+						{
+							"name": "Final Update",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "IncrementalLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('MaxModifiedDate'),\n''' where Owner = ''AmedeoTolace'' and TableName = ''',\npipeline().parameters.nome_tabella,\n''''\n)",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					]
+				}
 			},
 			{
 				"name": "GetLastLoadMetaData",
@@ -87,18 +185,18 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select max(ModifiedDate) as MaxModifiedDate from ETL.',pipeline().parameters.nome_tabella)",
+							"value": "@concat('select max(ModifiedDate) as MaxModifiedDate from SalesLT.',pipeline().parameters.nome_tabella)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "dat_db_DynamicTable",
+						"referenceName": "ADW_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail"
+							"schema": "SalesLT",
+							"table": "SalesLT.OrderDetails"
 						}
 					},
 					"firstRowOnly": true
@@ -125,6 +223,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"nome_tabella": {
+				"type": "string",
+				"defaultValue": "SalesOrderDetail"
+			}
+		},
 		"variables": {
 			"MaxModifiedDate": {
 				"type": "String"
