@@ -157,8 +157,8 @@
 									"referenceName": "dat_db_DynamicTable",
 									"type": "DatasetReference",
 									"parameters": {
-										"schema": "test",
-										"table": "test"
+										"schema": "ETL",
+										"table": "SalesOrderDetail_NicitaLea"
 									}
 								}
 							]
@@ -185,6 +185,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"sqlReaderQuery": "select max(ModifiedDate) as MAX\nfrom Sale",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -196,6 +197,38 @@
 										"table": "test"
 									}
 								}
+							}
+						},
+						{
+							"name": "Update",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Get_MaxModifiedDate_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
 					]
