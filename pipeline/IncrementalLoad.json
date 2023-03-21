@@ -28,27 +28,6 @@
 				}
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "SalesOrderID in (SELECT distinct SalesOrderID from ETL.SalesOrderDetail)",
-						"type": "Expression"
-					},
-					"isSequential": true,
-					"activities": [
-						{
-							"name": "If Condition1",
-							"type": "IfCondition",
-							"dependsOn": [],
-							"userProperties": []
-						}
-					]
-				}
-			},
-			{
 				"name": "UpdateFromdb",
 				"type": "Copy",
 				"dependsOn": [],
@@ -239,6 +218,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "@concat(",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -251,8 +231,28 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": []
 			}
 		],
+		"parameters": {
+			"table": {
+				"type": "string",
+				"defaultValue": "SalesOrderDetail"
+			}
+		},
+		"variables": {
+			"Load": {
+				"type": "String"
+			},
+			"ModifiedDate": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Giuseppe Fracascio"
 		},
