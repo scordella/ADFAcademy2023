@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat(\n'SELECT COALESCE(LastLoad,''01/01/1900'') AS LastLoad\nFROM ETL.LoadMeta\nWHERE Owner=''', \npipeline().parameters.owner,\n''' and \nTableName = ''', \npipeline().parameters.table\n''''\n)",
+						"sqlReaderQuery": "@concat(\n'SELECT COALESCE(LastLoad,''01/01/1900'') AS LastLoad\nFROM ETL.LoadMeta\nWHERE Owner=''', \npipeline().parameters.owner,\n''' and \nTableName = ''', \npipeline().parameters.table\n''' '\n)",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -73,6 +73,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from SalesLT.'\n,pipeline().parameters.table\n,' where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
