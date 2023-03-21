@@ -1,0 +1,600 @@
+{
+	"name": "incremental_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "get_last_load",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT MAX(LastLoad) FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' and TableName = 'SalesOrderDetail_ScarolaDomenico'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "LoadMeta"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "date_last_load",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "get_last_load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "date_last_load",
+					"value": {
+						"value": "@activity('get_last_load').output.date_last_load",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "date_last_load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('date_last_load'), 'NULL')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "incremental_load",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT * \nFROM SalesLT.SalesOrderDetail\nWHERE ModifiedDate > ',variables('date_last_load'))",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "SalesOrderID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SalesOrderID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "SalesOrderDetailID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SalesOrderDetailID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "OrderQty",
+												"type": "Int16",
+												"physicalType": "smallint"
+											},
+											"sink": {
+												"name": "OrderQty",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ProductID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ProductID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "UnitPrice",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											},
+											"sink": {
+												"name": "UnitPrice",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "UnitPriceDiscount",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											},
+											"sink": {
+												"name": "UnitPriceDiscount",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "LineTotal",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 6,
+												"precision": 38
+											},
+											"sink": {
+												"name": "LineTotal",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 8,
+												"precision": 36
+											}
+										},
+										{
+											"source": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											}
+										},
+										{
+											"source": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "SalesLT",
+										"table": "SalesOrderDetail"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail_ScarolaDomenico"
+									}
+								}
+							]
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "full_load",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "CustomerID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CustomerID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "NameStyle",
+												"type": "Boolean",
+												"physicalType": "bit"
+											},
+											"sink": {
+												"name": "NameStyle",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Title",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "Title",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "FirstName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "FirstName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "MiddleName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "MiddleName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "LastName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "LastName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Suffix",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "Suffix",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CompanyName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "CompanyName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "SalesPerson",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "SalesPerson",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "EmailAddress",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "EmailAddress",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Phone",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "Phone",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "PasswordHash",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "PasswordHash",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "PasswordSalt",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "PasswordSalt",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											}
+										},
+										{
+											"source": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "SalesLT",
+										"table": "Customer"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "Customer_ScarolaDomenico"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "get_maxModifiedDate",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "If Condition1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT MAX(ModifiedDate) FROM ETL.SalesOrderDetail_ScarolaDomenico",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail_ScarolaDomenico"
+						}
+					}
+				}
+			},
+			{
+				"name": "maxModifiedDate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "get_maxModifiedDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "maxModifiedDate",
+					"value": {
+						"value": "@activity('get_maxModifiedDate').output.maxModifiedDate",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "update_last_load",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "maxModifiedDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "dat_db",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "INSERT INTO ETL.LoadMeta VALUES('DomenicoScarola', 'SalesOrderDetail_ScarolaDomenico', @variables('maxModifiedDate') ))",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"variables": {
+			"date_last_load": {
+				"type": "String"
+			},
+			"maxModifiedDate": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "ScarolaDomenico"
+		},
+		"annotations": []
+	}
+}
