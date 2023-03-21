@@ -226,7 +226,7 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "update ETL.LoadMeta\nset LastLoad = MAX\nwhere owner = SalesOrderDetail_LeaNicita"
+										"text": "update ETL.LoadMeta\nset LastLoad = MAX\nwhere Owner = 'SalesOrderDetail_LeaNicita'"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
