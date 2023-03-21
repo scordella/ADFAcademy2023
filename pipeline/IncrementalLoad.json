@@ -30,7 +30,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "",
+						"sqlReaderQuery": "SELECT LastLoad\nFROM ETL.LoadMeta",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
