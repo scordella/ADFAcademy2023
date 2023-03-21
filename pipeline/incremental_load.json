@@ -493,7 +493,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT MAX(ModifiedDate) FROM ETL.SalesOrderDetail_ScarolaDomenico",
+						"sqlReaderQuery": "SELECT MAX(ModifiedDate) as new_date FROM ETL.SalesOrderDetail_ScarolaDomenico",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -522,7 +522,7 @@
 				"typeProperties": {
 					"variableName": "maxModifiedDate",
 					"value": {
-						"value": "@activity('get_maxModifiedDate').output.maxModifiedDate",
+						"value": "@activity('get_maxModifiedDate').output.firstRow.new_date",
 						"type": "Expression"
 					}
 				}
