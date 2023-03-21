@@ -1,0 +1,16 @@
+{
+	"name": "dat_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dat_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "ETL",
+			"table": "Customer_NicitaLea"
+		}
+	}
+}
