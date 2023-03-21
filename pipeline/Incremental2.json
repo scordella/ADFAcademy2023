@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate1\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco')",
+							"value": "@concat('SELECT coalesce(LastLoad, ''01/01/1970'') as LastLoad\n    FROM ETL.LoadMeta\n    WHERE TableName=''', pipeline().parameters.table,'''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -29,7 +29,10 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "SalesOrderDetail_BarbagalloFrancesco"
+							"table": {
+								"value": "@pipeline().parameters.table",
+								"type": "Expression"
+							}
 						}
 					}
 				}
@@ -235,11 +238,11 @@
 				}
 			},
 			{
-				"name": "Lookup2",
+				"name": "max",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Incremental",
+						"activity": "set_timestamp1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -274,11 +277,11 @@
 				}
 			},
 			{
-				"name": "Set variable2",
+				"name": "set_max",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup2",
+						"activity": "max",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -288,7 +291,7 @@
 				"typeProperties": {
 					"variableName": "MaxModifiedDate1",
 					"value": {
-						"value": "@activity('Lookup2').output.firstRow.MaxModifiedDate",
+						"value": "@activity('max').output.firstRow.MaxModifiedDate",
 						"type": "Expression"
 					}
 				}
@@ -296,14 +299,7 @@
 			{
 				"name": "Script1",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Set variable2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -332,73 +328,8 @@
 			{
 				"name": "If Condition1",
 				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "set_timestamp2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "set_timestamp1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": []
-			},
-			{
-				"name": "timestamp2",
-				"type": "Lookup",
 				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate2\nFROM ETL.LoadMeta')",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "ETL",
-							"table": "LoadMeta"
-						}
-					}
-				}
-			},
-			{
-				"name": "set_timestamp2",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "timestamp2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "MaxModifiedDate2",
-					"value": {
-						"value": "@activity('timestamp2').output.firstRow.MaxModifiedDate2",
-						"type": "Expression"
-					}
-				}
+				"userProperties": []
 			}
 		],
 		"parameters": {
@@ -411,7 +342,7 @@
 			"MaxModifiedDate1": {
 				"type": "String"
 			},
-			"MaxModifiedDate2": {
+			"Max": {
 				"type": "String"
 			}
 		},
