@@ -241,7 +241,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "Max",
-								"value": ""
+								"value": {
+									"value": "@activity('Lookup1').output.firstRow.Max",
+									"type": "Expression"
+								}
 							}
 						},
 						{
@@ -263,8 +266,20 @@
 								"secureInput": false
 							},
 							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
 							"typeProperties": {
-								"scripts": [],
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('Max'),\n''' where Owner = ''FrancescoBarbagallo'' and TableName =''SalesOrderDetail_FrancescoBarbagallo''')\n",
+											"type": "Expression"
+										}
+									}
+								],
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
