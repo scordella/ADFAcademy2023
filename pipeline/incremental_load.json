@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT MAX(LastLoad) FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' and TableName = 'SalesOrderDetail_ScarolaDomenico'",
+						"sqlReaderQuery": "SELECT MAX(LastLoad) AS last_load FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' AND TableName = 'SalesOrderDetail_ScarolaDomenico'\nGROUP BY Owner",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -25,8 +25,7 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL",
-							"table": "LoadMeta"
+							"schema": "ETL"
 						}
 					},
 					"firstRowOnly": false
@@ -47,7 +46,7 @@
 				"typeProperties": {
 					"variableName": "date_last_load",
 					"value": {
-						"value": "@activity('get_last_load').output.date_last_load",
+						"value": "@activity('get_last_load').output.last_load",
 						"type": "Expression"
 					}
 				}
@@ -573,11 +572,16 @@
 				"typeProperties": {
 					"scripts": [
 						{
+							"parameters": [
+								{
+									"name": "lastload",
+									"type": "Datetime",
+									"value": "variables('maxModifiedDate')",
+									"direction": "Input"
+								}
+							],
 							"type": "Query",
-							"text": {
-								"value": "INSERT INTO ETL.LoadMeta VALUES('DomenicoScarola', 'SalesOrderDetail_ScarolaDomenico', @variables('maxModifiedDate') ))",
-								"type": "Expression"
-							}
+							"text": "INSERT INTO ETL.LoadMeta VALUES('DomenicoScarola', 'SalesOrderDetail_ScarolaDomenico', @lastload ))"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
