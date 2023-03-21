@@ -267,7 +267,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "SELECT ModifiedDate from (SELECT max(ModifiedDate) from ADW.Sales.Customer as C full outer join ETL.Customer_FracascioGiuseppe as CFG on C.CustomerID==CFG.CustomerID)"
+							"text": "INSERT INTO ETL.LoadMeta (Owner,TableName, LastLoad) VALUES('GiuseppeFracascio','Customer_FracascioGiuseppe',GETDATE())"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
