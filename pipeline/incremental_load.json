@@ -45,7 +45,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "date_last_load",
+					"variableName": "last_load",
 					"value": {
 						"value": "@activity('get_last_load').output.value.dateload",
 						"type": "Expression"
@@ -594,6 +594,9 @@
 				"type": "String"
 			},
 			"maxModifiedDate": {
+				"type": "String"
+			},
+			"last_load": {
 				"type": "String"
 			}
 		},
