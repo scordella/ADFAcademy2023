@@ -1,0 +1,285 @@
+{
+	"name": "TimestampCheck",
+	"properties": {
+		"activities": [
+			{
+				"name": "TimestampCheck",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"ifTrueActivities": [
+						{
+							"name": "IncrementalLoad",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT*\nFROM SalesLT.SalesOrderDetail as A\nWHERE ModifiedDate>''',variables('LastLoad'),'''')\n",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "SalesOrderID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SalesOrderID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "SalesOrderDetailID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SalesOrderDetailID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "OrderQty",
+												"type": "Int16",
+												"physicalType": "smallint"
+											},
+											"sink": {
+												"name": "OrderQty",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ProductID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ProductID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "UnitPrice",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											},
+											"sink": {
+												"name": "UnitPrice",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "UnitPriceDiscount",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											},
+											"sink": {
+												"name": "UnitPriceDiscount",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "LineTotal",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 6,
+												"precision": 38
+											},
+											"sink": {
+												"name": "LineTotal",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 8,
+												"precision": 36
+											}
+										},
+										{
+											"source": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											}
+										},
+										{
+											"source": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "SalesLT",
+										"table": "SalesOrderDetail"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "IncrementalLoad",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "GetData_Modifica",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "IncrementalLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT MAX(ModifiedDate) AS Data_Modifica\nFROM ETL.SalesOrderDetail_ClementiJunio",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "IncrementalLoad",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "SetData_Modifica",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "GetData_Modifica",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Data_Modifica",
+								"value": {
+									"value": "@activity('GetData_Modifica').output.FirstRow.Data_Modifica",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "UpdateLastLoad",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "SetData_Modifica",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('Data_Modifica'),\n''' where Owner = ''JunioClementi'' and TableName= ''SalesOrderDetail''')\n",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "JunioClementiEsercitazione"
+		},
+		"annotations": []
+	}
+}
