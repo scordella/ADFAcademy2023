@@ -111,7 +111,7 @@
 				"typeProperties": {
 					"variableName": "MaxModifiedDate1",
 					"value": {
-						"value": "@activity('max').output.firstRow.MaxModifiedDate",
+						"value": "@activity('max').output.firstRow.Max",
 						"type": "Expression"
 					}
 				}
