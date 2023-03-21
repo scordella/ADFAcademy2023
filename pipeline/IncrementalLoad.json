@@ -218,7 +218,7 @@
 		"parameters": {
 			"table": {
 				"type": "string",
-				"defaultValue": "SalesOrderDetail_AmedeoTolace"
+				"defaultValue": "SalesOrderDetail"
 			}
 		},
 		"variables": {
