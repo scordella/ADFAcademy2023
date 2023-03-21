@@ -185,7 +185,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "select max(ModifiedDate) as MAX\nfrom Sale",
+									"sqlReaderQuery": "select max(ModifiedDate) as MAX\nfrom ETL.SalesOrderDetail_NicitaLea",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -193,7 +193,7 @@
 									"referenceName": "dat_db_DynamicTable",
 									"type": "DatasetReference",
 									"parameters": {
-										"schema": "test",
+										"schema": "ETL",
 										"table": "test"
 									}
 								}
