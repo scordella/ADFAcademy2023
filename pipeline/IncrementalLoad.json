@@ -65,7 +65,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@concat('@equals(', variables('Count'), '0')",
+						"value": "@equals(variables('Count'), '0')",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
