@@ -1,5 +1,5 @@
 {
-	"name": "Copy From db",
+	"name": "FullLoad",
 	"properties": {
 		"activities": [
 			{
