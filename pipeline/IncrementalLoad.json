@@ -498,7 +498,10 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "@concat('update ETL.LoadMeta set LastLoad = ',variables('MaxModifiedDate'),' where Owner = ''JunioClementi'' and TableName = \"ETL.LoadMeta\"'"
+										"text": {
+											"value": "@concat('update ETL.LoadMeta set LastLoad = ',variables('Data_Modifica'),' where Owner = ''JunioClementi'' and TableName = \"ETL.LoadMeta\"')",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
