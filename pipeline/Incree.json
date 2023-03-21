@@ -1,5 +1,5 @@
 {
-	"name": "IncrementalLoad",
+	"name": "Incree",
 	"properties": {
 		"activities": [
 			{
@@ -336,6 +336,12 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "CheckExistance",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": []
 			}
 		],
 		"parameters": {
@@ -350,6 +356,10 @@
 			},
 			"ModifiedDate": {
 				"type": "String"
+			},
+			"name": {
+				"type": "String",
+				"defaultValue": "GiuseppeFracascio"
 			}
 		},
 		"folder": {
