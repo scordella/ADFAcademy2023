@@ -73,18 +73,6 @@
 							},
 							{
 								"source": {
-									"name": "Size",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Size",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
 									"name": "ListPrice",
 									"type": "String",
 									"physicalType": "String"
