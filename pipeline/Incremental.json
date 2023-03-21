@@ -241,7 +241,7 @@
 		"parameters": {
 			"table": {
 				"type": "string",
-				"defaultValue": "SalesOrderDetail_BarbagalloFrancesco"
+				"defaultValue": "LoadMeta"
 			}
 		},
 		"variables": {
