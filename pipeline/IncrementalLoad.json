@@ -28,6 +28,22 @@
 				}
 			},
 			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"activities": [
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": []
+						}
+					]
+				}
+			},
+			{
 				"name": "UpdateFromdb",
 				"type": "Copy",
 				"dependsOn": [],
@@ -63,31 +79,23 @@
 				"inputs": [
 					{
 						"referenceName": "ADW_Table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "dat_SalesOrderDetailGiuseppeFracascio",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail_FracascioGiuseppe"
+						}
 					}
 				]
-			},
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"activities": [
-						{
-							"name": "If Condition1",
-							"type": "IfCondition",
-							"dependsOn": [],
-							"userProperties": []
-						}
-					]
-				}
 			}
 		],
 		"folder": {
