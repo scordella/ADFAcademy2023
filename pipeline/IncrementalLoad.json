@@ -189,7 +189,7 @@
 							"table": "SalesOrderDetail"
 						}
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			},
 			{
