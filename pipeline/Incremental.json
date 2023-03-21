@@ -204,8 +204,12 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dat_db2",
-						"type": "DatasetReference"
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail_BarbagalloFrancesco"
+						}
 					}
 				]
 			},
