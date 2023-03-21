@@ -1,0 +1,423 @@
+{
+	"name": "Incremental2",
+	"properties": {
+		"activities": [
+			{
+				"name": "timestamp1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate1\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail_BarbagalloFrancesco"
+						}
+					}
+				}
+			},
+			{
+				"name": "Incremental",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SalesOrderID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "SalesOrderID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "SalesOrderDetailID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "SalesOrderDetailID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "OrderQty",
+									"type": "Int16",
+									"physicalType": "smallint"
+								},
+								"sink": {
+									"name": "OrderQty",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "ProductID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ProductID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "UnitPrice",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								},
+								"sink": {
+									"name": "UnitPrice",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "UnitPriceDiscount",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								},
+								"sink": {
+									"name": "UnitPriceDiscount",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "LineTotal",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 38
+								},
+								"sink": {
+									"name": "LineTotal",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 8,
+									"precision": 36
+								}
+							},
+							{
+								"source": {
+									"name": "rowguid",
+									"type": "Guid",
+									"physicalType": "uniqueidentifier"
+								},
+								"sink": {
+									"name": "rowguid",
+									"type": "Guid",
+									"physicalType": "uniqueidentifier"
+								}
+							},
+							{
+								"source": {
+									"name": "ModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "ModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail_BarbagalloFrancesco"
+						}
+					}
+				]
+			},
+			{
+				"name": "set_timestamp1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "timestamp1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MaxModifiedDate1",
+					"value": {
+						"value": "@activity('timestamp1').output.firstRow.MaxModifiedDate1",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Lookup2",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Incremental",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail_BarbagalloFrancesco"
+						}
+					}
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MaxModifiedDate1",
+					"value": {
+						"value": "@activity('Lookup2').output.firstRow.MaxModifiedDate",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "dat_db",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('MaxModifiedDate'),\n''' where Owner = ''FrancescoBarbagallo'' and TableName = ''',\npipeline().parameters.table,\n''''\n)",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "set_timestamp2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "set_timestamp1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			},
+			{
+				"name": "timestamp2",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate2\nFROM ETL.LoadMeta')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "LoadMeta"
+						}
+					}
+				}
+			},
+			{
+				"name": "set_timestamp2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "timestamp2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MaxModifiedDate2",
+					"value": {
+						"value": "@activity('timestamp2').output.firstRow.MaxModifiedDate2",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"table": {
+				"type": "string",
+				"defaultValue": "SalesOrderDetail_BarbagalloFrancesco"
+			}
+		},
+		"variables": {
+			"MaxModifiedDate1": {
+				"type": "String"
+			},
+			"MaxModifiedDate2": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "EsercitazioneBarbagalloFrancesco"
+		},
+		"annotations": []
+	}
+}
