@@ -21,11 +21,11 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ADW_Table",
+						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "SalesLT",
-							"table": "SalesOrderDetail"
+							"schema": "ETL",
+							"table": "@pipeline().parameter"
 						}
 					},
 					"firstRowOnly": true
@@ -47,6 +47,40 @@
 					"variableName": "LastLoad",
 					"value": "@activity('Get_LastLoad').output.firstRow.LastLoad"
 				}
+			},
+			{
+				"name": "IncrementLoad",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "set_LastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"variables": {
