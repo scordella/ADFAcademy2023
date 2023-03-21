@@ -233,7 +233,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "Customer"
+							"table": "Customer_BarbagalloFrancesco"
 						}
 					}
 				]
