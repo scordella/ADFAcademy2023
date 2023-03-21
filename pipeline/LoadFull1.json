@@ -46,10 +46,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "SalesLT",
-							"table": {
-								"value": "@variables('Customer')",
-								"type": "Expression"
-							}
+							"table": "Customer"
 						}
 					}
 				],
