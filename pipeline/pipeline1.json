@@ -15,6 +15,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@greater(variables('MaxModifiedDate'), variables('LastLoad'))",
+						"type": "Expression"
+					},
 					"ifTrueActivities": [
 						{
 							"name": "IncrementalLoad",
