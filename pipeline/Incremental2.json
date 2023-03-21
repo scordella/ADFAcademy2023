@@ -145,10 +145,27 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('MaxModifiedDate1'),'''')",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -157,6 +174,16 @@
 									"parameters": {
 										"schema": "SalesLT",
 										"table": "SalesOrderDetail"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail_BarbagalloFrancesco"
 									}
 								}
 							]
@@ -198,7 +225,7 @@
 							}
 						},
 						{
-							"name": "Script2",
+							"name": "Script",
 							"type": "Script",
 							"dependsOn": [
 								{
