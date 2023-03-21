@@ -7,12 +7,10 @@
 		},
 		"parameters": {
 			"schema": {
-				"type": "string",
-				"defaultValue": "ETL"
+				"type": "string"
 			},
 			"table": {
-				"type": "string",
-				"defaultValue": "Customer_BarbagalloFrancesco"
+				"type": "string"
 			}
 		},
 		"annotations": [],

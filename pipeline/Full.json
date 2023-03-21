@@ -229,8 +229,12 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dat_db1",
-						"type": "DatasetReference"
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "Customer_BarbagalloFrancesco"
+						}
 					}
 				]
 			}
