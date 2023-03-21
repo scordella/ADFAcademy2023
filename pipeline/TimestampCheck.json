@@ -5,9 +5,20 @@
 			{
 				"name": "TimestampCheck",
 				"type": "IfCondition",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "SetData_Sales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "greater(',variables('Data_Sales')'',variables('Data_ETL'),'''')\n\n\n",
+						"type": "Expression"
+					},
 					"ifTrueActivities": [
 						{
 							"name": "IncrementalLoad",
@@ -275,8 +286,113 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "GetData_ETL",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT MAX(ModifiedDate) AS Data_ETL\nFROM ETL.SalesOrderDetail_ClementiJunio",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "IncrementalLoad",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "SetData_ETL",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetData_ETL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Data_ETL",
+					"value": {
+						"value": "@activity('GetData_ETL').output.FirstRow.Data_ETL",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "GetData_Sales",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SetData_ETL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT MAX(ModifiedDate) AS Data_Sales\nFROM SalesLT.SalesOrderDetail",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "SetData_Sales",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetData_Sales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Data_Sales",
+					"value": {
+						"value": "@activity('GetData_Sales').output.FirstRow.Data_Sales",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"Data_ETL": {
+				"type": "String"
+			},
+			"Data_Sales": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "JunioClementiEsercitazione"
 		},
