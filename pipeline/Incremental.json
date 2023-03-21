@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select LastLoad from ETL.LoadMeta",
+						"sqlReaderQuery": "select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = '''",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
