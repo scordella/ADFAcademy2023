@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Get_LastLoad",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -30,8 +30,30 @@
 					},
 					"firstRowOnly": true
 				}
+			},
+			{
+				"name": "set_LastLoad",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get_LastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LastLoad",
+					"value": "@activity('Get_LastLoad').output.firstRow.LastLoad"
+				}
 			}
 		],
+		"variables": {
+			"LastLoad": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "LeaNicita"
 		},
