@@ -54,7 +54,7 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "SetLoad_copy1",
+							"name": "SetLoad",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
@@ -67,11 +67,11 @@
 							}
 						},
 						{
-							"name": "UpdateFromdb_copy1",
+							"name": "UpdateFromdb",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "SetLoad_copy1",
+									"activity": "SetLoad",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -254,11 +254,11 @@
 							]
 						},
 						{
-							"name": "LastModifiedDate_copy1",
+							"name": "LastModifiedDate",
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "UpdateFromdb_copy1",
+									"activity": "UpdateFromdb",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -293,11 +293,11 @@
 							}
 						},
 						{
-							"name": "SetDate_copy1",
+							"name": "SetDate",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "LastModifiedDate_copy1",
+									"activity": "LastModifiedDate",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -313,11 +313,11 @@
 							}
 						},
 						{
-							"name": "UdateDate_copy1",
+							"name": "UdateDate",
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "SetDate_copy1",
+									"activity": "SetDate",
 									"dependencyConditions": [
 										"Succeeded"
 									]
