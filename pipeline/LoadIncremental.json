@@ -77,7 +77,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select * from SalesLT.\n where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
+							"value": "@concat('select * from SalesLT.SalesOrderDetail\n where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
