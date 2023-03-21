@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(' SELECT coalesce(LastLoad, ''01/01/1970'') as LastLoad\n    FROM ETL.LoadMeta\n    WHERE TableName='' ', pipeline().parameters.table,'''')",
+							"value": "@concat('SELECT coalesce(LastLoad, ''01/01/1970'') as LastLoad\n    FROM ETL.LoadMeta\n    WHERE TableName=''', pipeline().parameters.table,'''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -60,7 +60,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(' SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>'' ', variables('LastLoad'),'''')",
+							"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -267,7 +267,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(' SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco ')",
+							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
