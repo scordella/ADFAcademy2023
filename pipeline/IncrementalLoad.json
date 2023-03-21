@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Get_LastLoad",
+				"name": "GetLastLoad",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Get_LastLoad",
+						"activity": "GetLastLoad",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -46,7 +46,7 @@
 				"typeProperties": {
 					"variableName": "LastLoad",
 					"value": {
-						"value": "@activity('Get_LastLoad').output.firstRow.LastLoad",
+						"value": "@activity('GetLastLoad').output.firstRow.LastLoad",
 						"type": "Expression"
 					}
 				}
@@ -153,7 +153,7 @@
 				}
 			},
 			{
-				"name": "Get_Max_ModifiedDate",
+				"name": "GetMaxModifiedDate",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -197,7 +197,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Get_Max_ModifiedDate",
+						"activity": "GetMaxModifiedDate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -207,7 +207,7 @@
 				"typeProperties": {
 					"variableName": "MaxModifiedDate",
 					"value": {
-						"value": "@activity('Get_Max_ModifiedDate').output.firstRow.MaxModifiedDate",
+						"value": "@activity('GetMaxModifiedDate').output.firstRow.MaxModifiedDate",
 						"type": "Expression"
 					}
 				}
