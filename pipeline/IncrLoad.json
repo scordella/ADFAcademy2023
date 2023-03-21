@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('COALESCE (GioelePerri, '', 01/01/1900) as LastLoad\n    FROM ETL.LoadMeta\n    WHERE TableName='' ', pipeline().parameters.meta_table)",
+							"value": "@concat('SELECT COALESCE (GioelePerri, '', 01/01/1900) as LastLoad\n    FROM ETL.LoadMeta\n    WHERE TableName='' ', pipeline().parameters.meta_table)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
