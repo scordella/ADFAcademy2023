@@ -198,8 +198,8 @@
 						"referenceName": "ADW_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "test",
-							"table": "test"
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
 						}
 					}
 				],
