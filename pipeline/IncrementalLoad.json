@@ -5,7 +5,14 @@
 			{
 				"name": "GetLastLoad",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "setCheck",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -65,7 +72,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "LastLoad!='Null'",
+						"value": "Check=='True'",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -500,6 +507,16 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "setCheck",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Check",
+					"value": false
+				}
 			}
 		],
 		"variables": {
@@ -511,6 +528,9 @@
 			},
 			"Data_Modifica": {
 				"type": "String"
+			},
+			"Check": {
+				"type": "Boolean"
 			}
 		},
 		"folder": {
