@@ -19,7 +19,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'select coalesce(LastLoad,''01/01/1800'') as LastLoad from ETL.LoadMeta where TableName = ''',\npipeline().parameters.Table,\n''''\n)",
+							"value": "select LastLoad from etl.LoadMeta\nwhere Owner = 'PapagnoIlaria' and TableName = 'SalesOrderDetail_PapagnoIlaria'",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -30,7 +30,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "@pipeline().parameters.Table"
+							"table": "LoadMeta"
 						}
 					},
 					"firstRowOnly": true
@@ -214,6 +214,35 @@
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "GetMaxValue",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT max(ModifiedDate)\nFROM SalesLT.SalesOrderDetail",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "table",
+							"table": "table"
+						}
+					}
 				}
 			}
 		],
