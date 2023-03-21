@@ -42,9 +42,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ProductKey",
-									"type": "Int32",
-									"physicalType": "int"
+									"name": "ProductAltKey",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -67,6 +67,18 @@
 								},
 								"sink": {
 									"name": "Color",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Size",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
