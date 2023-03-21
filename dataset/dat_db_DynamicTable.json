@@ -6,13 +6,13 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"ETL": {
+			"schema": {
 				"type": "string",
-				"defaultValue": "test"
+				"defaultValue": "ETL"
 			},
-			"Customer_BarbagalloFrancesco": {
+			"table": {
 				"type": "string",
-				"defaultValue": "test"
+				"defaultValue": "Customer_BarbagalloFrancesco"
 			}
 		},
 		"annotations": [],
