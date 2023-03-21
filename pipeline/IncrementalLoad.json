@@ -98,7 +98,8 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -276,7 +277,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "\n@concat('select max(ModifiedDate) as LastMod from ETL.',pipeline().parameters.table)",
+										"value": "\n@concat('SELECT MAX(ModifiedDate) as LastMod from ETL.',pipeline().parameters.table)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
