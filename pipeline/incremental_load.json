@@ -33,36 +33,9 @@
 				}
 			},
 			{
-				"name": "date_last_load",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "get_last_load",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "last_load",
-					"value": {
-						"value": "@activity('get_last_load').output.dateload",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "If Condition1",
 				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "date_last_load",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
@@ -587,6 +560,26 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "set_last_load",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "get_last_load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DateLastLoad",
+					"value": {
+						"value": "@activity('get_last_load').output.value[0].dateload",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
@@ -597,6 +590,9 @@
 				"type": "String"
 			},
 			"last_load": {
+				"type": "String"
+			},
+			"DateLastLoad": {
 				"type": "String"
 			}
 		},
