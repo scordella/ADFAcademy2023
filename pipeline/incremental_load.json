@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT MAX(LastLoad) AS dateload FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' AND TableName = 'SalesOrderDetail_ScarolaDomenico'",
+						"sqlReaderQuery": "SELECT COALESCE(MAX(LastLoad), 'NULL') AS dateload FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' AND TableName = 'SalesOrderDetail_ScarolaDomenico'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -33,7 +33,7 @@
 				}
 			},
 			{
-				"name": "If Condition1",
+				"name": "If DateLastLoad is NULL",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
@@ -59,7 +59,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('SELECT * \nFROM SalesLT.SalesOrderDetail\nWHERE ModifiedDate > ',variables('date_last_load'))",
+										"value": "@concat('SELECT * \nFROM SalesLT.SalesOrderDetail\nWHERE ModifiedDate > ''',variables('DateLastLoad'),'''')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -469,7 +469,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "If Condition1",
+						"activity": "If DateLastLoad is NULL",
 						"dependencyConditions": [
 							"Succeeded"
 						]
