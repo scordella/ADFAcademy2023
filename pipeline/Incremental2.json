@@ -129,6 +129,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@greater(variables('Max'),variables('MaxModifiedDate1'))",
+						"type": "Expression"
+					},
 					"ifTrueActivities": [
 						{
 							"name": "Incremental",
