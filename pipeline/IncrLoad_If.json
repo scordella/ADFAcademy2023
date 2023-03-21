@@ -60,7 +60,14 @@
 			{
 				"name": "Get_Max_Date_LT",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "LastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -112,9 +119,20 @@
 			{
 				"name": "If Condition1",
 				"type": "IfCondition",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Max_Date_LT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@greater(variables('MaxLTDate'),variables('LastLoad'))",
+						"type": "Expression"
+					},
 					"ifTrueActivities": [
 						{
 							"name": "IncrLoad",
