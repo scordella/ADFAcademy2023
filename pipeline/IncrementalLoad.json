@@ -273,7 +273,8 @@
 									"referenceName": "dat_db_DynamicTable",
 									"type": "DatasetReference",
 									"parameters": {
-										"schema": "ETL"
+										"schema": "ETL",
+										"table": "LastLoad"
 									}
 								},
 								"firstRowOnly": true
@@ -422,7 +423,7 @@
 			},
 			"tabledat_db": {
 				"type": "string",
-				"defaultValue": "SalesOrderDetail_FracascioGiuseppe"
+				"defaultValue": "LastLoad"
 			}
 		},
 		"variables": {
