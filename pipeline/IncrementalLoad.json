@@ -183,7 +183,8 @@
 						"referenceName": "dat_SalesOrderDetailGiuseppeFracascio",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL"
+							"schema": "ETL",
+							"table": "SalesOrderDetail_FracascioGiuseppe"
 						}
 					}
 				]
