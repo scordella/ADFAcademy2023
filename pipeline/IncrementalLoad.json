@@ -374,7 +374,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate) FROM SalesLT.SalesOrderDetail WHERE Owner=''GiuseppeFracascio''')",
+							"value": "@concat('SELECT MAX(ModifiedDate) FROM SalesLT.', pipeline().parameters.tablesource,'WHERE Owner = ''GiuseppeFracascio''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -382,7 +382,11 @@
 					},
 					"dataset": {
 						"referenceName": "ADW_Table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
+						}
 					}
 				}
 			},
@@ -411,6 +415,10 @@
 			"table": {
 				"type": "string",
 				"defaultValue": "SalesOrderDetails_FracascioGiuseppe"
+			},
+			"tablesource": {
+				"type": "string",
+				"defaultValue": "SalesOrderDetail"
 			}
 		},
 		"variables": {
