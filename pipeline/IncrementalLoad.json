@@ -235,11 +235,21 @@
 			{
 				"name": "Set variable1",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "LastDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Load",
-					"value": ""
+					"value": {
+						"value": "@activity('LastDate').output.value.LastLoad",
+						"type": "Expression"
+					}
 				}
 			}
 		],
