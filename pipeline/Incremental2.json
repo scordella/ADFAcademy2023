@@ -143,8 +143,23 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
 								"enableStaging": false
-							}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "SalesLT",
+										"table": "SalesOrderDetail"
+									}
+								}
+							]
 						},
 						{
 							"name": "Lookup1",
@@ -177,7 +192,10 @@
 									]
 								}
 							],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": ""
+							}
 						},
 						{
 							"name": "Script2",
