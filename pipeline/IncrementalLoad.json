@@ -73,10 +73,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat('select * from SalesLT.'\n,pipeline().parameters.table\n,' where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
-							"type": "Expression"
-						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
