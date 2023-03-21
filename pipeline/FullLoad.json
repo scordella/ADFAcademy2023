@@ -219,8 +219,12 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SalesLT_Customer",
-						"type": "DatasetReference"
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "Customer"
+						}
 					}
 				],
 				"outputs": [
