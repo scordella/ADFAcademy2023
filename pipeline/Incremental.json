@@ -22,8 +22,12 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "dat_db3",
-						"type": "DatasetReference"
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "LoadMeta"
+						}
 					}
 				}
 			},
