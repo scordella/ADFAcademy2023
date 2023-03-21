@@ -65,7 +65,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "LastLoad=='Null'",
+						"value": "LastLoad!='Null'",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
