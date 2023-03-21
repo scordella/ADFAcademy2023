@@ -229,7 +229,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dat_db",
+						"referenceName": "dat_db1",
 						"type": "DatasetReference"
 					}
 				]
