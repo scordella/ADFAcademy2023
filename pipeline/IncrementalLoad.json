@@ -227,9 +227,9 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "CheckExistance",
+						"activity": "LastDate",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -340,18 +340,11 @@
 			{
 				"name": "CheckExistance",
 				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "LastDate",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('Load'),'NULL')",
+						"value": "@equals(variables('name'), 'NULL')",
 						"type": "Expression"
 					}
 				}
