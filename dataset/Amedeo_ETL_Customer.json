@@ -2,7 +2,7 @@
 	"name": "Amedeo_ETL_Customer",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ADW",
+			"referenceName": "dat_db",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -73,8 +73,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "SalesLT",
-			"table": "Customer"
+			"schema": "ETL",
+			"table": "Customer_TolaceAmedeo"
 		}
 	}
 }
