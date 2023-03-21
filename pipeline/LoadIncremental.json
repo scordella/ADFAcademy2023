@@ -31,7 +31,8 @@
 							"schema": "ETL",
 							"table": "LoadMeta"
 						}
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -101,11 +102,7 @@
 				"inputs": [
 					{
 						"referenceName": "ADW_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "test",
-							"table": "test"
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
