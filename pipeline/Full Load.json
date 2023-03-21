@@ -17,7 +17,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT *\n--INTO dat_db.ETL.Customer_PerriGioele\nFROM ADW.SalesLT.Customer;",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -41,8 +40,7 @@
 						"referenceName": "ADW_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "SalesLT",
-							"table": "Customer"
+							"schema": "ADW"
 						}
 					}
 				],
