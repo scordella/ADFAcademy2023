@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'SELECT coalesce(LastLoad,''01/05/2008'') as\n    Load FROM ETL.LoadMeta\n    WHERE TableName = ''',\n    pipeline().parameters.table,\n''''\n)",
+							"value": "@concat(\n'SELECT coalesce(LastLoad,''2008-05-13'') as\n    Load FROM ETL.LoadMeta\n    WHERE TableName = ''',\n    pipeline().parameters.table,\n''''\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -58,7 +58,7 @@
 						"value": "@equals(variables('Load'), variables('SourceDate'))",
 						"type": "Expression"
 					},
-					"ifTrueActivities": [
+					"ifFalseActivities": [
 						{
 							"name": "UpdateFromdb",
 							"type": "Copy",
