@@ -22,7 +22,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE table ETL.CustomerGiuseppeFracascio",
+						"preCopyScript": "TRUNCATE table ETL.Customer_FracascioGiuseppe",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -45,11 +45,11 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dat_db_DynamicTable",
+						"referenceName": "dat_CustomerGiuseppeFracascio",
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "CustomerGiuseppeFracascio"
+							"table": "Customer_FracascioGiuseppe"
 						}
 					}
 				]
