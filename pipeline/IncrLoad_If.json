@@ -58,81 +58,9 @@
 				}
 			},
 			{
-				"name": "IncrLoad",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "LastLoad",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ADW_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "SalesLT",
-							"table": "SalesOrderDetail"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail_PerriGioele"
-						}
-					}
-				]
-			},
-			{
-				"name": "Max_Modified_Date",
+				"name": "Get_Max_Date_LT",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "IncrLoad",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -145,7 +73,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_PerriGioele')",
+							"value": "SELECT MAX(ModifiedDate) as MaxLTDate\nFROM SalesLT.SalesOrderDetail",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -162,11 +90,11 @@
 				}
 			},
 			{
-				"name": "Write_Date",
+				"name": "Max_Date_LT",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Max_Modified_Date",
+						"activity": "Get_Max_Date_LT",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -174,47 +102,174 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "WriteDate",
+					"variableName": "MaxLTDate",
 					"value": {
-						"value": "@activity('Max_Modified_Date').output.firstRow.MaxModifiedDate",
+						"value": "@activity('Get_Max_Date_LT').output.firstRow.MaxLTDate",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "MetaLoadWrite",
-				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Write_Date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
 				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "dat_db",
-					"type": "LinkedServiceReference"
-				},
 				"typeProperties": {
-					"scripts": [
+					"ifTrueActivities": [
 						{
-							"type": "Query",
-							"text": {
-								"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('WriteDate'),\n''' where Owner = ''GioelePerri'' and TableName =''SalesOrderDetail_PerriGioele''')\n\n",
-								"type": "Expression"
+							"name": "IncrLoad",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "SalesLT",
+										"table": "SalesOrderDetail"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail_PerriGioele"
+									}
+								}
+							]
+						},
+						{
+							"name": "Max_Modified_Date_copy1",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "IncrLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_PerriGioele')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail_PerriGioele"
+									}
+								}
+							}
+						},
+						{
+							"name": "Write_Date_copy1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Max_Modified_Date_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "WriteDate",
+								"value": {
+									"value": "@activity('Max_Modified_Date').output.firstRow.MaxModifiedDate",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "MetaLoadWrite_copy1",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Write_Date_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('WriteDate'),\n''' where Owner = ''GioelePerri'' and TableName =''SalesOrderDetail_PerriGioele''')\n\n",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
+					]
 				}
 			}
 		],
@@ -229,6 +284,9 @@
 				"type": "String"
 			},
 			"WriteDate": {
+				"type": "String"
+			},
+			"MaxLTDate": {
 				"type": "String"
 			}
 		},
