@@ -30,8 +30,30 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "SetLastLoad",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetLastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LastLoad",
+					"value": "output.GetLastLoad.value.firstRow"
+				}
 			}
 		],
+		"variables": {
+			"LastLoad": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "JunioClementiEsercitazione"
 		},
