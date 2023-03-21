@@ -147,7 +147,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('MaxModifiedDate'),\n''' where Owner = ''SimoneCordella'' and TableName = ''',\npipeline().parameters.table,\n''''\n)",
+								"value": "@concat('\nupdate ETL.LoadMeta \nset LastLoad = ''',variables('MaxModifiedDate'),''' \nwhere Owner = ''DittadiNiccolo'' and TableName = ''',\npipeline().parameters.table,''''\n)",
 								"type": "Expression"
 							}
 						}
@@ -178,7 +178,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select max(ModifiedDate) as MaxModifiedDate from ETL.',pipeline().parameters.table)",
+							"value": "@concat('\nselect max(ModifiedDate) as MaxModifiedDate \nfrom ETL.',pipeline().parameters.table)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
