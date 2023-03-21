@@ -117,7 +117,7 @@
 				]
 			},
 			{
-				"name": "Update LastLoad",
+				"name": "Final Update",
 				"type": "Script",
 				"dependsOn": [
 					{
