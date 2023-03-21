@@ -449,7 +449,7 @@
 							}
 						},
 						{
-							"name": "SetMax",
+							"name": "SetData_Modifica",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -461,8 +461,8 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "Max",
-								"value": ""
+								"variableName": "Data_Modifica",
+								"value": "@activity('GetData_Modifica').output.FirstRow.Data_Modifica"
 							}
 						}
 					]
@@ -474,6 +474,9 @@
 				"type": "String"
 			},
 			"Max": {
+				"type": "String"
+			},
+			"Data_Modifica": {
 				"type": "String"
 			}
 		},
