@@ -100,12 +100,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ADW_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "test",
-							"table": "test"
-						}
+						"referenceName": "inccrementalsalesOrder",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
