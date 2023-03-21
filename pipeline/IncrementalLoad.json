@@ -49,7 +49,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('name'), 'NULL')",
+						"value": "@equals(variables('Load'), 'NULL')",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -364,10 +364,6 @@
 			},
 			"ModifiedDate": {
 				"type": "String"
-			},
-			"name": {
-				"type": "String",
-				"defaultValue": "GiuseppeFracascio"
 			}
 		},
 		"folder": {
