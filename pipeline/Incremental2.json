@@ -206,7 +206,26 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail_BarbagalloFrancesco"
+									}
+								}
+							}
 						},
 						{
 							"name": "Set variable1",
