@@ -101,7 +101,7 @@
 				}
 			},
 			{
-				"name": "If Condition1",
+				"name": "CheckNewRecords",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
