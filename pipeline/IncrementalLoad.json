@@ -263,7 +263,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "\n@concat('SELECT MAX(ModifiedDate) as LastMod from ETL.',pipeline().parameters.table)",
+										"value": "\n@concat('SELECT MAX(ModifiedDate) as LastMod from ETL.',pipeline().parameters.tabledat_db)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -419,6 +419,10 @@
 			"tablesource": {
 				"type": "string",
 				"defaultValue": "SalesOrderDetail"
+			},
+			"tabledat_db": {
+				"type": "string",
+				"defaultValue": "SalesOrderDetail_FracascioGiuseppe"
 			}
 		},
 		"variables": {
