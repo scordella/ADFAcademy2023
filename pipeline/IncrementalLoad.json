@@ -64,6 +64,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "",
+						"type": "Expression"
+					},
 					"ifFalseActivities": [
 						{
 							"name": "FullLoad",
@@ -411,6 +415,38 @@
 									"type": "DatasetReference"
 								}
 							]
+						},
+						{
+							"name": "GetMax",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "IncrementalLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT MAX(ModifiedDate) AS Data_Modifica\nFROM ETL.SalesOrderDetail_ClementiJunio",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "IncrementalLoad",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					]
 				}
