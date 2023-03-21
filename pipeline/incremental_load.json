@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT COALESCE(MAX(LastLoad), 'NULL') AS dateload FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' AND TableName = 'SalesOrderDetail_ScarolaDomenico'",
+						"sqlReaderQuery": "SELECT COALESCE(MAX(LastLoad), NULL) AS dateload FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' AND TableName = 'SalesOrderDetail_ScarolaDomenico'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
