@@ -188,7 +188,8 @@
 							"schema": "ETL",
 							"table": "SalesOrderDetail"
 						}
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
