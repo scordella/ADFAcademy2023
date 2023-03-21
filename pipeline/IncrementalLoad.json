@@ -413,7 +413,7 @@
 			}
 		],
 		"parameters": {
-			"table": {
+			"tablename": {
 				"type": "string",
 				"defaultValue": "SalesOrderDetails_FracascioGiuseppe"
 			},
