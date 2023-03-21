@@ -220,7 +220,8 @@
 		],
 		"parameters": {
 			"meta_table": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "LoadMeta"
 			}
 		},
 		"variables": {
