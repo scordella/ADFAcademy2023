@@ -30,7 +30,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "@pipeline().parameters.meta_table"
+							"table": "@pipeline().parameters.Table"
 						}
 					},
 					"firstRowOnly": true
