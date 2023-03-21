@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT MAX(LastLoad)\nFROM ETL.LoadMeta",
+						"sqlReaderQuery": "SELECT MAX(LastLoad) AS LastLoad\nFROM ETL.LoadMeta",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -45,7 +45,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "LastLoad",
-					"value": "@activity('GetLastLoad').output.firstRow."
+					"value": {
+						"value": "@activity('GetLastLoad').output.firstRow.LastLoad",
+						"type": "Expression"
+					}
 				}
 			}
 		],
