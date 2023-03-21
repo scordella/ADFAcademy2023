@@ -216,7 +216,7 @@
 		"parameters": {
 			"nome_tabella": {
 				"type": "string",
-				"defaultValue": "SalesOrderDetail_TolaceAmedeo"
+				"defaultValue": "SalesOrderDetail"
 			},
 			"owner": {
 				"type": "string",
