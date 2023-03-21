@@ -241,7 +241,7 @@
 		"parameters": {
 			"table": {
 				"type": "string",
-				"defaultValue": "SalesOrderdDetail_BarbagalloFrancesco"
+				"defaultValue": "SalesOrderDetail_BarbagalloFrancesco"
 			}
 		},
 		"variables": {
