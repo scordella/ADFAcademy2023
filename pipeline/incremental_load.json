@@ -565,7 +565,7 @@
 								}
 							],
 							"type": "Query",
-							"text": "INSERT INTO ETL.LoadMeta VALUES('DomenicoScarola', 'SalesOrderDetail_ScarolaDomenico', @lastload ))"
+							"text": "INSERT INTO ETL.LoadMeta VALUES('DomenicoScarola', 'SalesOrderDetail_ScarolaDomenico', @lastload )"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
