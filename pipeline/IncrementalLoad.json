@@ -65,7 +65,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals('ETL.SalesOrderDetail_ClementiJunio', 'Null')",
+						"value": "@concat('@equals(', variables('Count'), '0')",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -556,7 +556,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Count",
-					"value": "@activity('SalesCount').output.firstRow.Count"
+					"value": "@activity('SalesCount').output.firstRow.Conto"
 				}
 			}
 		],
