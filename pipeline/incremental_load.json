@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT MAX(LastLoad) AS last_load FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' AND TableName = 'SalesOrderDetail_ScarolaDomenico'\nGROUP BY Owner",
+						"sqlReaderQuery": "SELECT MAX(LastLoad) AS dateload FROM ETL.LoadMeta\nWHERE Owner = 'DomenicoScarola' AND TableName = 'SalesOrderDetail_ScarolaDomenico'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -25,7 +25,8 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL"
+							"schema": "ETL",
+							"table": "LoadMeta"
 						}
 					},
 					"firstRowOnly": false
