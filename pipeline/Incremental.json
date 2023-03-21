@@ -21,7 +21,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "dat_db",
+						"referenceName": "dat_db2",
 						"type": "DatasetReference"
 					}
 				}
