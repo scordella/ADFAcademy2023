@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "LastLoad",
-					"value": "output.GetLastLoad.value.firstRow"
+					"value": "@activity('GetLastLoad').output.firstRow."
 				}
 			}
 		],
