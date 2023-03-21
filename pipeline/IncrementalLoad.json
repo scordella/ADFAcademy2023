@@ -423,7 +423,7 @@
 			},
 			"tabledat_db": {
 				"type": "string",
-				"defaultValue": "LastLoad"
+				"defaultValue": "SalesOrderDetail_FracascioGiuseppe"
 			}
 		},
 		"variables": {
