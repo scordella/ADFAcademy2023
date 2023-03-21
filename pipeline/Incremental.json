@@ -232,7 +232,7 @@
 				"typeProperties": {
 					"variableName": "LastLoad",
 					"value": {
-						"value": "@activity('Lookup1').output.firstRow",
+						"value": "@activity('Lookup1').output.firstRow.LastLoad",
 						"type": "Expression"
 					}
 				}
