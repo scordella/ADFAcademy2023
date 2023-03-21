@@ -38,7 +38,11 @@
 				"inputs": [
 					{
 						"referenceName": "ADW_Table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "Customer"
+						}
 					}
 				],
 				"outputs": [
