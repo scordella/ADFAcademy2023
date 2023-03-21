@@ -1,0 +1,9 @@
+{
+	"name": "IncrementalLoad",
+	"properties": {
+		"folder": {
+			"name": "AmedeoTolace"
+		},
+		"annotations": []
+	}
+}
