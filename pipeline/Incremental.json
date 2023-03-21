@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select *\nfrom ETL.LoadMeta \nwhere TableName='SalesOrderDetail'",
+						"sqlReaderQuery": "",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -228,7 +228,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "LastLoad",
-					"value": "@activity('Get_LastLoad').output.firstRow.LastLoad"
+					"value": ""
 				}
 			}
 		],
