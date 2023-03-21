@@ -556,7 +556,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Count",
-					"value": "@activity('SalesCount').output.firstRow.Conto"
+					"value": {
+						"value": "@activity('SalesCount').output.firstRow.Conto",
+						"type": "Expression"
+					}
 				}
 			}
 		],
