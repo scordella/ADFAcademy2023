@@ -214,7 +214,8 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL"
+							"schema": "ETL",
+							"table": "LastLoad"
 						}
 					},
 					"firstRowOnly": false
