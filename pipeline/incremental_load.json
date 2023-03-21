@@ -557,7 +557,10 @@
 								{
 									"name": "lastload",
 									"type": "Datetime",
-									"value": "variables('maxModifiedDate')",
+									"value": {
+										"value": "@variables('maxModifiedDate')",
+										"type": "Expression"
+									},
 									"direction": "Input"
 								}
 							],
