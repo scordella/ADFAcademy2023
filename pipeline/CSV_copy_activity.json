@@ -1,5 +1,5 @@
 {
-	"name": "copy_activity",
+	"name": "CSV_copy_activity",
 	"properties": {
 		"activities": [
 			{
@@ -133,6 +133,20 @@
 				]
 			}
 		],
+		"variables": {
+			"date_last_load": {
+				"type": "String"
+			},
+			"maxModifiedDate": {
+				"type": "String"
+			},
+			"last_load": {
+				"type": "String"
+			},
+			"DateLastLoad": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "ScarolaDomenico"
 		},
