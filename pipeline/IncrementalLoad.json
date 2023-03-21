@@ -347,7 +347,7 @@
 				"typeProperties": {
 					"variableName": "Load",
 					"value": {
-						"value": "@string(activity('LastDate').output.firstRow.Load)",
+						"value": "@activity('LastDate').output.firstRow.Load",
 						"type": "Expression"
 					}
 				}
