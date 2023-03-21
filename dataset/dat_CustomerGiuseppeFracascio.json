@@ -12,7 +12,7 @@
 			},
 			"table": {
 				"type": "string",
-				"defaultValue": "CustomerGiuseppeFracascio"
+				"defaultValue": "Customer_FracascioGiuseppe"
 			}
 		},
 		"annotations": [],
