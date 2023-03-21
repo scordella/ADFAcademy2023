@@ -72,7 +72,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "Check=='True'",
+						"value": "@concat ('@equals(',variabes('Check'),'True')",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -265,7 +265,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "@concat('SELECT*\nFROM SalesLT.SalesOrderDetail as A\nWHERE ModifiedDate>',variables('LastLoad'))\n",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT*\nFROM SalesLT.SalesOrderDetail as A\nWHERE ModifiedDate>',variables('LastLoad'))\n",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -469,7 +472,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "Data_Modifica",
-								"value": "@activity('GetData_Modifica').output.FirstRow.Data_Modifica"
+								"value": {
+									"value": "@activity('GetData_Modifica').output.FirstRow.Data_Modifica",
+									"type": "Expression"
+								}
 							}
 						},
 						{
@@ -487,6 +493,39 @@
 							"typeProperties": {
 								"variableName": "Check",
 								"value": ""
+							}
+						},
+						{
+							"name": "UpdateLastLoad",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "SetData_Modifica",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "dat_db",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": "@concat('update ETL.LoadMeta set LastLoad = ''',\r\nvariables('MaxModifiedDate'),\r\n''' where Owner = ''JunioClementi'' and TableName = ''',"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
 					]
