@@ -395,6 +395,9 @@
 			},
 			"Data_Sales": {
 				"type": "String"
+			},
+			"Data_Modifica": {
+				"type": "String"
 			}
 		},
 		"folder": {
