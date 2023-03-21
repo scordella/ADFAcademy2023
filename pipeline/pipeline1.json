@@ -1,0 +1,141 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Set MaxModifiedDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			},
+			{
+				"name": "GetLastLoadMetaData",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "@concat(\n'SELECT COALESCE(LastLoad,''01/01/1900'') AS LastLoad\nFROM ETL.LoadMeta\nWHERE Owner=''AmedeoTolace'' and TableName=''SalesOrderDetail'' '\n)",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "LoadMeta"
+						}
+					}
+				}
+			},
+			{
+				"name": "Set LastLoad",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetLastLoadMetaData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LastLoad",
+					"value": {
+						"value": "@activity('GetLastLoadMetaData').output.firstRow.LastLoad",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "GetMaxModifiedDate",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Set LastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select max(ModifiedDate) as MaxModifiedDate from ETL.',pipeline().parameters.nome_tabella)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail"
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Set MaxModifiedDate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetMaxModifiedDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MaxModifiedDate",
+					"value": {
+						"value": "@activity('GetMaxModifiedDate').output.firstRow.MaxModifiedDate",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"MaxModifiedDate": {
+				"type": "String"
+			},
+			"LastLoad": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "AmedeoTolace"
+		},
+		"annotations": []
+	}
+}
