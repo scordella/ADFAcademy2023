@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat(\n'SELECT COALESCE(LastLoad,''01/01/1900'') AS LastLoad FROM ETL.LoadMeta WHERE TableName = \"AmedeoTolace'\n)",
+						"sqlReaderQuery": "@concat(\n'SELECT COALESCE(LastLoad,''01/01/1900'') AS LastLoad\nFROM ETL.LoadMeta\nWHERE Owner='AmedeoTolace' and TableName='SalesOrderDetail')",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
