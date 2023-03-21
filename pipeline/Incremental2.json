@@ -80,7 +80,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate) as Max\nFROM SalesLT.SalesOrderDetail_BarbagalloFrancesco')",
+							"value": "@concat('SELECT MAX(ModifiedDate) as Max\nFROM SalesLT.SalesOrderDetail')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
