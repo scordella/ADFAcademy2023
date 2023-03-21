@@ -30,12 +30,142 @@
 					},
 					"firstRowOnly": true
 				}
+			},
+			{
+				"name": "LastLoad",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LastLoad",
+					"value": "@activity('Get_LastLoad').output.firstRow.LastLoad"
+				}
+			},
+			{
+				"name": "IncrementalLoad",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "LastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "test",
+							"table": "test"
+						}
+					}
+				]
+			},
+			{
+				"name": "MaxModifiedDate",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "IncrementalLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "WriteData",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "MaxModifiedDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LastLoad",
+					"value": ""
+				}
+			},
+			{
+				"name": "MetaLoadDataa",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "WriteData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "dat_db",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('MaxModifiedDate'),\n''' where Owner = ''IlariaPapagno'' and TableName = ''',\npipeline().parameters.table,\n''''\n)"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"parameters": {
 			"Table": {
 				"type": "string",
 				"defaultValue": "SalesOrderDetail"
+			}
+		},
+		"variables": {
+			"LastLoad": {
+				"type": "String"
 			}
 		},
 		"folder": {
