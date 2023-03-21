@@ -55,15 +55,8 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "ETL",
-							"table": {
-								"value": "@pipeline().parameters.table_name",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "dat_MirsadaMataj",
+						"type": "DatasetReference"
 					}
 				]
 			}

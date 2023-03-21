@@ -15,8 +15,102 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"enableStaging": false
-				}
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ProductID"
+								},
+								"sink": {
+									"name": "ProductAltKey",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ProductName"
+								},
+								"sink": {
+									"name": "ProductName",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Color"
+								},
+								"sink": {
+									"name": "Color",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Size"
+								},
+								"sink": {
+									"name": "Size",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ListPrice"
+								},
+								"sink": {
+									"name": "ListPrice",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "Discontinued"
+								},
+								"sink": {
+									"name": "DiscontinuedStr",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ProductData",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DimProduct",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"folder": {

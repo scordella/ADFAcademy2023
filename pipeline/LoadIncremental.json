@@ -215,12 +215,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"table": {
-				"type": "string",
-				"defaultValue": "SalesOrderDetail"
-			}
-		},
 		"variables": {
 			"LastLoad": {
 				"type": "String"
