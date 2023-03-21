@@ -417,7 +417,7 @@
 							]
 						},
 						{
-							"name": "GetMax",
+							"name": "GetData_Modifica",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -447,6 +447,23 @@
 									"type": "DatasetReference"
 								}
 							}
+						},
+						{
+							"name": "SetMax",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "GetData_Modifica",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Max",
+								"value": ""
+							}
 						}
 					]
 				}
@@ -454,6 +471,9 @@
 		],
 		"variables": {
 			"LastLoad": {
+				"type": "String"
+			},
+			"Max": {
 				"type": "String"
 			}
 		},
