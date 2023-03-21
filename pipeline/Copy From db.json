@@ -239,6 +239,39 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "LoadTimestamp",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Customer FULLLOAD Copy",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "dat_db",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "SELECT ModifiedDate from (SELECT max(ModifiedDate) from ADW.Sales.Customer as C full outer join ETL.Customer_FracascioGiuseppe as CFG on C.CustomerID==CFG.CustomerID)"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"folder": {
