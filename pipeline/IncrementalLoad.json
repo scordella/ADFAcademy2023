@@ -373,16 +373,16 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MAX(ModifiedDate) FROM SalesLT.SalesOrderDetail WHERE Owner=''GiuseppeFracascio''')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "SalesLT",
-							"table": "SalesOrderDetail"
-						}
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference"
 					}
 				}
 			},
