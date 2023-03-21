@@ -175,7 +175,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select max(ModifiedDate) as MaxModifiedDate from ETL.',pipeline().parameters.table)",
+							"value": "@concat('select max(ModifiedDate) as MaxModifiedDate from ETL.',pipeline().parameters.nome_tabella)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
