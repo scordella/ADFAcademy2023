@@ -5,14 +5,7 @@
 			{
 				"name": "GetLastLoad",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "setCheck",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -431,7 +424,7 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "setCheckTrue",
+									"activity": "IncrementalLoad",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -479,23 +472,6 @@
 							}
 						},
 						{
-							"name": "setCheckTrue",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "IncrementalLoad",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Check",
-								"value": ""
-							}
-						},
-						{
 							"name": "UpdateLastLoad",
 							"type": "Script",
 							"dependsOn": [
@@ -529,16 +505,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "setCheck",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Check",
-					"value": false
 				}
 			}
 		],
