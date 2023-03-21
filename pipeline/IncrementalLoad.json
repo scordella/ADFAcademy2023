@@ -216,7 +216,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "LastLoad"
+							"table": "LoadMeta"
 						}
 					},
 					"firstRowOnly": false
