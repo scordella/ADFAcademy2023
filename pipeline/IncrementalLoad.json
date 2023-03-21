@@ -330,7 +330,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "@concat('UPDATE ETL.LoadMeta set Load=''', variables('ModifiedDate'), ''' where Owner=''GiuseppeFracascio'' and TableName=''', pipeline().parameters.table)\n\n",
+								"value": "@concat('UPDATE ETL.LoadMeta set Load=''N/A',  ''' where Owner=''GiuseppeFracascio'' and TableName=''', pipeline().parameters.table,\n 'INSERT INTO ETL.LoadMeta (Owner, TableName, LastLoad) VALUES(''GiuseppeFracascio', pipeline().parameters.table, variables('ModifiedDate'))",
 								"type": "Expression"
 							}
 						}
