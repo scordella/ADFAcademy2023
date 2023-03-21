@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT *\nINTO dat_db.ETL.Customer_PerriGioele\nFROM ADW.SalesLT.Customer;",
+						"sqlReaderQuery": "SELECT *\n--INTO dat_db.ETL.Customer_PerriGioele\nFROM ADW.SalesLT.Customer;",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -47,8 +47,8 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "test",
-							"table": "test"
+							"schema": "ETL",
+							"table": "Customer_PerriGioele"
 						}
 					}
 				]
