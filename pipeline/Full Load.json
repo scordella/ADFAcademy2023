@@ -247,7 +247,7 @@
 		"parameters": {
 			"table_name": {
 				"type": "string",
-				"defaultValue": "Customer"
+				"defaultValue": "Customer_DittadiNiccolo"
 			}
 		},
 		"variables": {
