@@ -24,6 +24,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT* from SalesLT.'\n,pipeline().parameters.table\n,' where ModifiedDate > '''\n,variables('Load')\n,''''\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -201,7 +205,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'select coalesce(LastLoad,GETDATE()) as LastLoad from ETL.LoadMeta where TableName = ''',\npipeline().parameters.table,\n''''\n)",
+							"value": "@concat(\n'select LastLoad,GETDATE() as Load from ETL.LoadMeta where TableName = ''',\npipeline().parameters.table,\n''''\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -233,7 +237,7 @@
 				"typeProperties": {
 					"variableName": "Load",
 					"value": {
-						"value": "@activity('LastDate').output.value.LastLoad",
+						"value": "@activity('LastDate').output.firstRow.Load",
 						"type": "Expression"
 					}
 				}
