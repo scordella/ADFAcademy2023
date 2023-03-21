@@ -325,7 +325,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "\n@concat('''update ETL.LoadMeta set LastLoad = ''',\nvariables('Data_Modifica'),\n''' where Owner = ''JunioClementi'' and TableName= ''SalesOrderDetail''')",
+											"value": "\n@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('Data_Modifica'),\n''' where Owner = ''JunioClementi'' and TableName= ''SalesOrderDetail''')",
 											"type": "Expression"
 										}
 									}
