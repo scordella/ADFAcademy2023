@@ -87,11 +87,11 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "dat_db_DynamicTable",
+						"referenceName": "ADW_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail_PerriGioele"
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
 						}
 					}
 				}
