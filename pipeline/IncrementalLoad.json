@@ -103,7 +103,7 @@
 						"referenceName": "ADW_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "Sales",
+							"schema": "SalesLT",
 							"table": "SalesOrderDetails"
 						}
 					}
