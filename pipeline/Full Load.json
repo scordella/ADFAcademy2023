@@ -42,7 +42,7 @@
 						"parameters": {
 							"schema": "ADW",
 							"table": {
-								"value": "@pipeline().parameters.table",
+								"value": "@pipeline().parameters.src_table",
 								"type": "Expression"
 							}
 						}
@@ -54,7 +54,10 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "@pipeline().parameters.table"
+							"table": {
+								"value": "@pipeline().parameters.table",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -62,6 +65,9 @@
 		],
 		"parameters": {
 			"table": {
+				"type": "String"
+			},
+			"src_table": {
 				"type": "String"
 			}
 		},
