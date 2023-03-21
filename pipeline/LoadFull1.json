@@ -47,7 +47,7 @@
 						"parameters": {
 							"schema": "SalesLT",
 							"table": {
-								"value": "@pipeline().parameters.table_name",
+								"value": "@variables('Customer')",
 								"type": "Expression"
 							}
 						}
@@ -58,8 +58,8 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL.SalesOrderDetail_MirsadaMataj",
-							"table": "@pipeline().parameters.table_name"
+							"schema": "ETL",
+							"table": "Customer_MirsadaMataj"
 						}
 					}
 				]
@@ -69,6 +69,11 @@
 			"table_name": {
 				"type": "string",
 				"defaultValue": "Customer"
+			}
+		},
+		"variables": {
+			"Customer": {
+				"type": "String"
 			}
 		},
 		"folder": {
