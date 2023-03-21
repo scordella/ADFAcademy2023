@@ -271,7 +271,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "SalesOrderDetail_BarbagalloFrancesco"
+							"table": "SalesOrderDetail"
 						}
 					}
 				}
