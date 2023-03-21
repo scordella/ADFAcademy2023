@@ -2,7 +2,7 @@
 	"name": "dat_db_DynamicTable",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ADW",
+			"referenceName": "dat_db",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
