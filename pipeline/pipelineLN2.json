@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select LastLoad from ETL.LoadMeta\nwhere Owner = 'LeaNicita' and TableName = 'SalesOrderDetail_LeaNicita'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -111,6 +112,41 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Get_MaxModifiedDate",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "IncrementLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "test",
+							"table": "test"
+						}
+					}
+				}
 			}
 		],
 		"variables": {
