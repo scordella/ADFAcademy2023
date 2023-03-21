@@ -223,7 +223,11 @@
 				"inputs": [
 					{
 						"referenceName": "ADW_Table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "test",
+							"table": "test"
+						}
 					}
 				],
 				"outputs": [
