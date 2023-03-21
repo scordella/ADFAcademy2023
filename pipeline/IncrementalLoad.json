@@ -247,7 +247,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "@concat(\"SELECT*\nFROM SalesLT.SalesOrderDetail as A\nWHERE activity('GetLastLoad').output.firstRow.LastLoad>A.ModifiedDate\")\n",
+									"sqlReaderQuery": "@concat('SELECT*\nFROM SalesLT.SalesOrderDetail as A\nWHERE ModifiedDate>',variables('LastLoad'))\n",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
