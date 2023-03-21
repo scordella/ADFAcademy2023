@@ -65,7 +65,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@concat('equals(',variables('LastLoad'),' Null)')",
+						"value": "@equals('ETL.SalesOrderDetail_ClementiJunio', 'Null')",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
