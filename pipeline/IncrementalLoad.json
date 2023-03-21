@@ -214,7 +214,7 @@
 			}
 		],
 		"parameters": {
-			"table": {
+			"nome_tabella": {
 				"type": "string",
 				"defaultValue": "SalesOrderDetail"
 			},
