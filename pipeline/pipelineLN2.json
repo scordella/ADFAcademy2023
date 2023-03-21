@@ -17,7 +17,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat(\n'select coalesce(LastLoad,''01/01/1990'') as LastLoad from ETL.LoadMeta where TableName = ''',\npipeline().parameters.table,\n''''\n)",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -46,7 +45,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "LastLoad",
-					"value": "@activity('Get_LastLoad').output.firstRow.LastLoad"
+					"value": {
+						"value": "@activity('Get_LastLoad').output.firstRow.LastLoad",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -71,14 +73,41 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from SalesLT.SalesOrderDetail\n where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "ADW_Table",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dat_db",
 						"type": "DatasetReference"
 					}
 				]
