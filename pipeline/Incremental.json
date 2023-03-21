@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select coalesce(LastLoad,'01/01/1970') as LastLoad \nfrom ETL.LoadMeta \nwhere TableName = ''",
+						"sqlReaderQuery": "@concat(\n'select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = ''',\npipeline().parameters.table,\n''''\n)",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -225,9 +225,18 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LastLoad",
+					"value": "@activity('Get_LastLoad').output.firstRow.LastLoad"
+				}
 			}
 		],
+		"variables": {
+			"LastLoad": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "EsercitazioneBarbagalloFrancesco"
 		},
