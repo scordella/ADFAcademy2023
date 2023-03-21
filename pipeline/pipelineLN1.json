@@ -229,8 +229,12 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ETL_Customer_NicitaLea",
-						"type": "DatasetReference"
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "Customer_LeaNicita"
+						}
 					}
 				]
 			}
