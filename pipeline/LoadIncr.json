@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat('SELECT COALESCE (LastLoad, ''01/01/1900'') as LastLoad\n    FROM ETL.LoadMeta \n    WHERE TableName=''', pipeline().parameters.meta_table,'''')",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT COALESCE (LastLoad, ''01/01/1900'') as LastLoad\n    FROM ETL.LoadMeta \n    WHERE TableName=''', pipeline().parameters.meta_table,'''')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -26,7 +29,10 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "@pipeline().parameters.meta_table"
+							"table": {
+								"value": "@pipeline().parameters.meta_table",
+								"type": "Expression"
+							}
 						}
 					}
 				}
@@ -45,7 +51,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "LastLoad",
-					"value": "@activity('Get_LastLoad_var').output.firstRow.LastLoad"
+					"value": {
+						"value": "@activity('Get_LastLoad_var').output.firstRow.LastLoad",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -70,7 +79,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -82,6 +94,128 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SalesOrderID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "SalesOrderID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "SalesOrderDetailID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "SalesOrderDetailID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "OrderQty",
+									"type": "Int16",
+									"physicalType": "smallint"
+								},
+								"sink": {
+									"name": "OrderQty",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "ProductID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ProductID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "UnitPrice",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								},
+								"sink": {
+									"name": "UnitPrice",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "UnitPriceDiscount",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								},
+								"sink": {
+									"name": "UnitPriceDiscount",
+									"type": "Decimal",
+									"physicalType": "money",
+									"scale": 4,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "LineTotal",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 38
+								},
+								"sink": {
+									"name": "LineTotal",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 8,
+									"precision": 36
+								}
+							},
+							{
+								"source": {
+									"name": "rowguid",
+									"type": "Guid",
+									"physicalType": "uniqueidentifier"
+								},
+								"sink": {
+									"name": "rowguid",
+									"type": "Guid",
+									"physicalType": "uniqueidentifier"
+								}
+							},
+							{
+								"source": {
+									"name": "ModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "ModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -132,7 +266,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_PerriGioele')",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_SorbelloAndrea')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -161,7 +298,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "WriteDate",
-					"value": "@activity('Max_Modified_Date').output.firstRow.MaxModifiedDate"
+					"value": {
+						"value": "@activity('Max_Modified_Date').output.firstRow.MaxModifiedDate",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -191,7 +331,10 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('WriteDate'),\n''' where Owner = ''AndreaSorbello'' and TableName =''SalesOrderDetail_SorbelloAndrea''')\n\n"
+							"text": {
+								"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('WriteDate'),\n''' where Owner = ''AndreaSorbello'' and TableName =''SalesOrderDetail_SorbelloAndrea''')\n\n",
+								"type": "Expression"
+							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
