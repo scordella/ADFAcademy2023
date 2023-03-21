@@ -30,7 +30,7 @@
 						"parameters": {
 							"schema": "ETL",
 							"table": {
-								"value": "@pipeline().parameters.meta_table",
+								"value": "meta_table",
 								"type": "Expression"
 							}
 						}
@@ -58,243 +58,10 @@
 				}
 			},
 			{
-				"name": "IncrLoad",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "LastLoad",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "SalesOrderID",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "SalesOrderID",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "SalesOrderDetailID",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "SalesOrderDetailID",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "OrderQty",
-									"type": "Int16",
-									"physicalType": "smallint"
-								},
-								"sink": {
-									"name": "OrderQty",
-									"type": "Int16",
-									"physicalType": "smallint"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductID",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "ProductID",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "UnitPrice",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								},
-								"sink": {
-									"name": "UnitPrice",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								}
-							},
-							{
-								"source": {
-									"name": "UnitPriceDiscount",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								},
-								"sink": {
-									"name": "UnitPriceDiscount",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								}
-							},
-							{
-								"source": {
-									"name": "LineTotal",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 6,
-									"precision": 38
-								},
-								"sink": {
-									"name": "LineTotal",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 8,
-									"precision": 36
-								}
-							},
-							{
-								"source": {
-									"name": "rowguid",
-									"type": "Guid",
-									"physicalType": "uniqueidentifier"
-								},
-								"sink": {
-									"name": "rowguid",
-									"type": "Guid",
-									"physicalType": "uniqueidentifier"
-								}
-							},
-							{
-								"source": {
-									"name": "ModifiedDate",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								},
-								"sink": {
-									"name": "ModifiedDate",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ADW_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "SalesTL",
-							"table": "SalesOrderDetail"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail_SorbelloAndrea"
-						}
-					}
-				]
-			},
-			{
-				"name": "Max_Modified_Date",
-				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "IncrLoad",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_SorbelloAndrea')",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail_SorbelloAndrea"
-						}
-					}
-				}
-			},
-			{
 				"name": "Write_Date",
 				"description": "",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Max_Modified_Date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "WriteDate",
@@ -338,6 +105,281 @@
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Get_Maxvalue_ModifiedData",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select * from SalesTL.SalesOrderDetail whe",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ADW_Table",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
+						}
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "LastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get_Maxvalue_ModifiedData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(activity('Get_Maxvalue_ModifiedData').output.firstRow.MAX,variables('LastLoad'))",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "IncrLoad",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "SalesOrderID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SalesOrderID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "SalesOrderDetailID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SalesOrderDetailID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "OrderQty",
+												"type": "Int16",
+												"physicalType": "smallint"
+											},
+											"sink": {
+												"name": "OrderQty",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ProductID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ProductID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "UnitPrice",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											},
+											"sink": {
+												"name": "UnitPrice",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "UnitPriceDiscount",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											},
+											"sink": {
+												"name": "UnitPriceDiscount",
+												"type": "Decimal",
+												"physicalType": "money",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "LineTotal",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 6,
+												"precision": 38
+											},
+											"sink": {
+												"name": "LineTotal",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 8,
+												"precision": 36
+											}
+										},
+										{
+											"source": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "rowguid",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											}
+										},
+										{
+											"source": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "ModifiedDate",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "SalesTL",
+										"table": "SalesOrderDetail"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail_SorbelloAndrea"
+									}
+								}
+							]
+						},
+						{
+							"name": "Max_Modified_Date",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "IncrLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_SorbelloAndrea')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ETL",
+										"table": "SalesOrderDetail_SorbelloAndrea"
+									}
+								}
+							}
+						}
+					]
 				}
 			}
 		],
