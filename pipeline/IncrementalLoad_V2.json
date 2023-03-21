@@ -68,6 +68,21 @@
 						"value": "@equals(variables('Count'), '0')",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "Incremental_Load",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "TimestampCheck",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "FullLoad",
