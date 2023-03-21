@@ -1,5 +1,5 @@
 {
-	"name": "Esercizio2",
+	"name": "Full Load",
 	"properties": {
 		"activities": [
 			{
@@ -54,6 +54,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "Esercizi"
+		},
 		"annotations": []
 	}
 }
