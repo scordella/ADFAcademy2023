@@ -26,7 +26,11 @@
 					},
 					"dataset": {
 						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "LoadMeta"
+						}
 					}
 				}
 			},
