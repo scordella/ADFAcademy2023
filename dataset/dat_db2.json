@@ -59,7 +59,7 @@
 		],
 		"typeProperties": {
 			"schema": "ETL",
-			"table": "SalesOrderDetail"
+			"table": "SalesOrderDetail_BarbagalloFrancesco"
 		}
 	}
 }
