@@ -17,10 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "select coalesce(LastLoad) as LastLoad from ETL.LoadMeta where TableName = 'Customer_DomenicoScarola'",
-							"type": "Expression"
-						},
+						"sqlReaderQuery": "",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -208,12 +205,8 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail_BarbagalloFrancesco"
-						}
+						"referenceName": "dat_db2",
+						"type": "DatasetReference"
 					}
 				]
 			},
@@ -228,10 +221,7 @@
 						]
 					}
 				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": ""
-				}
+				"userProperties": []
 			}
 		],
 		"folder": {
