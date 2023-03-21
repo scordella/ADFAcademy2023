@@ -56,7 +56,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "SalesCount",
+						"activity": "SetCount",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -541,6 +541,23 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "SetCount",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SalesCount",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Count",
+					"value": "@activity('SalesCount').output.firstRow.Count"
+				}
 			}
 		],
 		"variables": {
@@ -555,6 +572,9 @@
 			},
 			"Check": {
 				"type": "Boolean"
+			},
+			"Count": {
+				"type": "String"
 			}
 		},
 		"folder": {
