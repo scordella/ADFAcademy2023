@@ -557,7 +557,7 @@
 				"typeProperties": {
 					"variableName": "Count",
 					"value": {
-						"value": "@activity('SalesCount').output.firstRow.Conto",
+						"value": "@string(activity('SalesCount').output.firstRow.Conto)",
 						"type": "Expression"
 					}
 				}
