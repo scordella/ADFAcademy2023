@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "GetLastLoad",
+				"description": "recuperare ultimo time stamp, dati con data maggiore dell'ultimo load effettuato",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +18,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat(\n'select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = 'PapagnoIlaria',\npipeline().parameters.table,\n''''\n)",
+						"sqlReaderQuery": "@concat(\n'select coalesce(LastLoad,''01/01/1800'') as LastLoad from ETL.LoadMeta where TableName = ''',\npipeline().parameters.table,\n''''\n)",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -46,7 +47,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "LastLoad",
-					"value": "@activity('Get_LastLoad').output.firstRow.LastLoad"
+					"value": "@activity('GetLastLoad').output.firstRow.LastLoad"
 				}
 			},
 			{
@@ -71,10 +72,24 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "@concat('select * from SalesLT.'\n,pipeline().parameters.table\n,' where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)\n\n",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
@@ -83,6 +98,16 @@
 						"parameters": {
 							"schema": "test",
 							"table": "test"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ETL",
+							"table": "SalesOrderDetail"
 						}
 					}
 				]
@@ -105,7 +130,23 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "@concat('select max(ModifiedDate) as MaxModifiedDate from ETL.',pipeline().parameters.table)",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "test",
+							"table": "test"
+						}
+					}
+				}
 			},
 			{
 				"name": "WriteData",
@@ -120,8 +161,8 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "LastLoad",
-					"value": ""
+					"variableName": "MaxModifiedDate",
+					"value": "@activity('Get_Max_ModifiedDate').output.firstRow.MaxModifiedDate"
 				}
 			},
 			{
@@ -166,6 +207,10 @@
 		},
 		"variables": {
 			"LastLoad": {
+				"type": "String",
+				"defaultValue": "SalesOrderDetail"
+			},
+			"MaxModifiedDate": {
 				"type": "String"
 			}
 		},
