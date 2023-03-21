@@ -147,7 +147,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('MaxModifiedDate'),\n''' where Owner = ''SimoneCordella'' and TableName = ''',\npipeline().parameters.table,\n''''\n)",
+								"value": "@concat('update ETL.LoadMeta set LastLoad = ''',\nvariables('MaxModifiedDate'),\n''' where Owner = ''AmedeoTolace'' and TableName = ''',\npipeline().parameters.table,\n''''\n)",
 								"type": "Expression"
 							}
 						}
@@ -188,8 +188,8 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "test",
-							"table": "test"
+							"schema": "ETL",
+							"table": "SalesOrderDetail"
 						}
 					}
 				}
