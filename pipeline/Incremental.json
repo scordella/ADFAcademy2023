@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = ''",
+							"value": "'select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = '''",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
