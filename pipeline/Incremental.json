@@ -21,7 +21,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "dat_db2",
+						"referenceName": "dat_db3",
 						"type": "DatasetReference"
 					}
 				}
@@ -197,6 +197,19 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"folder": {
