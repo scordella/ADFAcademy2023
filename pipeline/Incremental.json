@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "",
+						"sqlReaderQuery": {
+							"value": "@utcnow()",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -228,7 +231,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "LastLoad",
-					"value": ""
+					"value": {
+						"value": "@activity('Lookup1').output.firstRow",
+						"type": "Expression"
+					}
 				}
 			}
 		],
