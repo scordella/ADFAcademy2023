@@ -212,7 +212,7 @@
 			}
 		],
 		"parameters": {
-			"TableName": {
+			"table": {
 				"type": "string",
 				"defaultValue": "SalesOrderDetails"
 			}
