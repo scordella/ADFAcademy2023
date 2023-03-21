@@ -84,7 +84,7 @@
 		],
 		"typeProperties": {
 			"schema": "ETL",
-			"table": "Customer"
+			"table": "Customer_FracascioGiuseppe"
 		}
 	}
 }
