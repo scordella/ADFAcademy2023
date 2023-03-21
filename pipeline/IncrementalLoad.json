@@ -65,7 +65,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@concat('equals(',variables('Check'),' True)')",
+						"value": "@concat('equals(',variables('LastLoad'),' Null)')",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -498,7 +498,7 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "@concat('update ETL.LoadMeta set LastLoad = ''',\r\nvariables('MaxModifiedDate'),\r\n''' where Owner = ''JunioClementi'' and TableName = ''',"
+										"text": "@concat('update ETL.LoadMeta set LastLoad = ',variables('MaxModifiedDate'),' where Owner = ''JunioClementi'' and TableName = \"ETL.LoadMeta\"'"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
