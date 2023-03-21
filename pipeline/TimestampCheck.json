@@ -399,7 +399,7 @@
 			"Data_Modifica": {
 				"type": "String"
 			},
-			"Last_Load": {
+			"LastLoad": {
 				"type": "String"
 			}
 		},
