@@ -183,8 +183,7 @@
 						"referenceName": "dat_SalesOrderDetailGiuseppeFracascio",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail_FracascioGiuseppe"
+							"schema": "ETL"
 						}
 					}
 				]
@@ -215,8 +214,7 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL",
-							"table": "LoadMeta"
+							"schema": "ETL"
 						}
 					},
 					"firstRowOnly": false
@@ -275,8 +273,7 @@
 						"referenceName": "dat_db_DynamicTable",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ETL",
-							"table": "SalesOrderDetail"
+							"schema": "ETL"
 						}
 					},
 					"firstRowOnly": true
