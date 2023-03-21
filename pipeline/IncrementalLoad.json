@@ -374,7 +374,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate) FROM SalesLT.', pipeline().parameters.tablesource,'WHERE Owner = ''GiuseppeFracascio''')",
+							"value": "@concat('SELECT MAX(ModifiedDate) FROM SalesLT.SalesOrderDetail')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
