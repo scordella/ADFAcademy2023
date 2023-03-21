@@ -60,7 +60,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>''', variables('LastLoad'),'''')",
+							"value": "@concat(' SELECT *\n         FROM SalesLT.SalesOrderDetail\n         WHERE ModifiedDate>'' ', variables('LastLoad'),'''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -267,7 +267,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT MAX(ModifiedDate)\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco')",
+							"value": "@concat(' SELECT MAX(ModifiedDate) as MaxModifiedDate\nFROM ETL.SalesOrderDetail_BarbagalloFrancesco ')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -280,6 +280,26 @@
 							"schema": "ETL",
 							"table": "SalesOrderDetail_BarbagalloFrancesco"
 						}
+					}
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MaxModifiedDate",
+					"value": {
+						"value": "@activity('Lookup2').output.firstRow.MaxModifiedDate",
+						"type": "Expression"
 					}
 				}
 			}
