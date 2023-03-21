@@ -40,7 +40,11 @@
 						"referenceName": "ADW_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "ADW"
+							"schema": "ADW",
+							"table": {
+								"value": "@pipeline().parameters.table",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -50,12 +54,17 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "Customer_PerriGioele"
+							"table": "@pipeline().parameters.table"
 						}
 					}
 				]
 			}
 		],
+		"parameters": {
+			"table": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Esercizi"
 		},
