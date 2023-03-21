@@ -245,7 +245,14 @@
 			{
 				"name": "LastModifiedDate",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "UpdateFromdb",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -258,7 +265,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT max(LastLoad) FROM ',pipeline().parameters.table,'ORDER BY LastLoad')",
+							"value": "\n@concat('select max(ModifiedDate) as LastMod from ETL.',pipeline().parameters.table)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -269,10 +276,30 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schema": "ETL",
-							"table": "LastLoad"
+							"table": "SalesOrderDetail"
 						}
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "SetDate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "LastModifiedDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ModifiedDate",
+					"value": {
+						"value": "@activity('LastModifiedDate').output.firstRow.ModifiedDate",
+						"type": "Expression"
+					}
 				}
 			}
 		],
