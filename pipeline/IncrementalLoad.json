@@ -17,10 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat(\n'select coalesce(LastLoad,''01/01/1970'') as LastLoad from ETL.LoadMeta where TableName = ''',\npipeline().parameters.table,\n''''\n)",
-							"type": "Expression"
-						},
+						"sqlReaderQuery": "@concat(\n'SELECT COALESCE(LastLoad,''01/01/1900'') AS LastLoad FROM ETL.LoadMeta WHERE TableName = \"AmedeoTolace'\n)",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
