@@ -40,7 +40,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "LastDate",
+						"activity": "SetLoad",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -54,29 +54,9 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "SetLoad",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Load",
-								"value": {
-									"value": "@activity('LastDate').output.firstRow.Load",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "UpdateFromdb",
 							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "SetLoad",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -350,6 +330,26 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "SetLoad",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "LastDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Load",
+					"value": {
+						"value": "@activity('LastDate').output.firstRow.Load",
+						"type": "Expression"
+					}
 				}
 			}
 		],
