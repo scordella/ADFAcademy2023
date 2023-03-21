@@ -532,7 +532,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT COUNT(*) AS conto\nFROM ETL.SalesOrderDetail_ClementiJunio",
+						"sqlReaderQuery": "SELECT COUNT(*) AS Conto\nFROM ETL.SalesOrderDetail_ClementiJunio",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
