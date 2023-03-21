@@ -44,12 +44,18 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "SetSourceDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('Load'), 'NULL')",
+						"value": "@equals(variables('Load'), variables('SourceDate'))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -351,6 +357,54 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "GetSourceDate",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dat_db_DynamicTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "SalesLT",
+							"table": "SalesOrderDetail"
+						}
+					}
+				}
+			},
+			{
+				"name": "SetSourceDate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetSourceDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "SourceDate",
+					"value": {
+						"value": "@activity('GetSourceDate').output.firstRow.SourceDate",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -364,6 +418,9 @@
 				"type": "String"
 			},
 			"ModifiedDate": {
+				"type": "String"
+			},
+			"SourceDate": {
 				"type": "String"
 			}
 		},
