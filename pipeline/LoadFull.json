@@ -45,11 +45,7 @@
 						"referenceName": "ADW_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"schema": "SalesLT",
-							"table": {
-								"value": "@pipeline().parameters.table_name",
-								"type": "Expression"
-							}
+							"schema": "e"
 						}
 					}
 				],
@@ -71,7 +67,7 @@
 		"parameters": {
 			"table_name": {
 				"type": "string",
-				"defaultValue": "Customer"
+				"defaultValue": "Customer_Tolace"
 			}
 		},
 		"folder": {
