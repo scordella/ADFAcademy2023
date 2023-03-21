@@ -53,102 +53,6 @@
 				}
 			},
 			{
-				"name": "IncrementLoad",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "set_LastLoad",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat('select * from SalesLT.SalesOrderDetail\n where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ADW_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "SalesLT",
-							"table": "SalesOrderDetail"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dat_db",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Get_MaxModifiedDate",
-				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "IncrementLoad",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "dat_db_DynamicTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"schema": "test",
-							"table": "test"
-						}
-					}
-				}
-			},
-			{
 				"name": "Get_Maxvalue_ModifiedData",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -175,6 +79,126 @@
 							"table": "SalesOrderDetail"
 						}
 					}
+				}
+			},
+			{
+				"name": "If Conditiotion",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "set_LastLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get_Maxvalue_ModifiedData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(activity('Get_Maxvalue_ModifiedData' ).output.firstRow.MAX, variables('LastLoad'))",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "IncrementLoad",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from SalesLT.SalesOrderDetail\n where ModifiedDate > '''\n,variables('LastLoad')\n,''''\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADW_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "SalesLT",
+										"table": "SalesOrderDetail"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "test",
+										"table": "test"
+									}
+								}
+							]
+						},
+						{
+							"name": "Get_MaxModifiedDate_copy1",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "IncrementLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "dat_db_DynamicTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "test",
+										"table": "test"
+									}
+								}
+							}
+						}
+					]
 				}
 			}
 		],
