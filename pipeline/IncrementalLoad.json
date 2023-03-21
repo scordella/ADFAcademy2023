@@ -263,7 +263,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "\n@concat('SELECT MAX(ModifiedDate) as ModifiedDate from ETL.',pipeline().parameters.tabledat_db)",
+										"value": "\n@concat('SELECT MAX(ModifiedDate) as LastDate from ETL.',pipeline().parameters.tabledat_db)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -295,7 +295,7 @@
 							"typeProperties": {
 								"variableName": "ModifiedDate",
 								"value": {
-									"value": "@activity('LastModifiedDate').output.firstRow.ModifiedDate",
+									"value": "@activity('LastModifiedDate').output.firstRow.LastLoad",
 									"type": "Expression"
 								}
 							}
