@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "SetLoad",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -223,7 +223,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "SetLoad",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
