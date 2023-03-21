@@ -47,7 +47,7 @@
 				"typeProperties": {
 					"variableName": "last_load",
 					"value": {
-						"value": "@activity('get_last_load').output.value.dateload",
+						"value": "@activity('get_last_load').output.firstRow.dateload",
 						"type": "Expression"
 					}
 				}
