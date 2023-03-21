@@ -499,7 +499,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@concat('update ETL.LoadMeta set LastLoad = ',variables('Data_Modifica'),' where Owner = ''JunioClementi'' and TableName = \"ETL.LoadMeta\"')",
+											"value": "@concat('UPDATE ETL.LoadMeta \n        SET LastLoad = ',variables('Data_Modifica'),' \n        WHERE Owner = ''JunioClementi'' and TableName = \"ETL.LoadMeta\"')",
 											"type": "Expression"
 										}
 									}
